@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <link rel="icon" href="https://i.ibb.co/0RSmbB11/image.png" type="image/png" />
   <meta name="description" content="BIG BROTHER MAGIC - Parfume premium dengan aroma eksklusif untuk pria dan wanita modern." />
   <style>
@@ -76,32 +78,14 @@
     }
 
     @keyframes waveFlow {
-      0% {
-        background-position: 0% 50%, 0% 50%, 0% 0%;
-      }
-      25% {
-        background-position: 30% 60%, 20% 40%, 10% 20%;
-      }
-      50% {
-        background-position: 60% 40%, 50% 60%, 30% 40%;
-      }
-      75% {
-        background-position: 80% 70%, 70% 30%, 60% 60%;
-      }
-      100% {
-        background-position: 100% 50%, 100% 50%, 80% 80%;
-      }
+      0% { background-position: 0% 50%, 0% 50%, 0% 0%; }
+      25% { background-position: 30% 60%, 20% 40%, 10% 20%; }
+      50% { background-position: 60% 40%, 50% 60%, 30% 40%; }
+      75% { background-position: 80% 70%, 70% 30%, 60% 60%; }
+      100% { background-position: 100% 50%, 100% 50%, 80% 80%; }
     }
 
-    .topbar,
-    .hero,
-    .stats-strip,
-    .section,
-    footer {
-      position: relative;
-      z-index: 1;
-    }
-
+    .topbar, .hero, .stats-strip, .section, footer { position: relative; z-index: 1; }
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; }
     .container { width: min(1180px, calc(100% - 32px)); margin: auto; }
@@ -120,47 +104,14 @@
       backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--line);
     }
-    .nav {
-      min-height: 76px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--gold);
-      font: 800 1.25rem 'Cinzel', serif;
-    }
-    .brand img {
-      width: 46px;
-      height: 46px;
-      object-fit: contain;
-      border-radius: 50%;
-    }
-    .navlinks {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      color: #ddd;
-      font-size: 0.88rem;
-    }
-    .navlinks a:hover {
-      color: var(--gold);
-    }
-    .menu-btn {
-      display: none;
-      padding: 9px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      background: #101010;
-      color: #fff;
-      font-size: 1.2rem;
-      cursor: pointer;
-    }
+    .nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: flex; align-items: center; gap: 12px; color: var(--gold); font: 800 1.25rem 'Cinzel', serif; }
+    .brand img { width: 46px; height: 46px; object-fit: contain; border-radius: 50%; }
+    .navlinks { display: flex; align-items: center; gap: 18px; color: #ddd; font-size: 0.88rem; }
+    .navlinks a:hover { color: var(--gold); }
+    .menu-btn { display: none; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line); background: #101010; color: #fff; font-size: 1.2rem; cursor: pointer; }
 
+    /* ===== HERO ===== */
     .hero {
       min-height: 78vh;
       display: grid;
@@ -226,9 +177,7 @@
       transition: 0.22s;
       cursor: pointer;
     }
-    .btn:hover {
-      transform: translateY(-2px);
-    }
+    .btn:hover { transform: translateY(-2px); }
     .btn-primary {
       background: linear-gradient(135deg, var(--gold), var(--gold3));
       color: #111;
@@ -240,6 +189,7 @@
       color: var(--text);
     }
 
+    /* ===== STATS ===== */
     .stats-strip {
       margin-top: -48px;
       position: relative;
@@ -267,6 +217,7 @@
       font-size: 0.85rem;
     }
 
+    /* ===== PRODUK ===== */
     .grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -302,32 +253,17 @@
       filter: drop-shadow(0 8px 30px rgba(246, 199, 68, 0.15));
       transition: transform 0.3s ease;
     }
-    .card:hover .product-cover img {
-      transform: scale(1.06);
-    }
+    .card:hover .product-cover img { transform: scale(1.06); }
     .product-cover i {
       font-size: 4.5rem;
       color: var(--gold);
       filter: drop-shadow(0 8px 30px rgba(246, 199, 68, 0.15));
       transition: transform 0.3s ease;
     }
-    .card:hover .product-cover i {
-      transform: scale(1.06);
-    }
-    .card-body {
-      padding: 22px;
-      text-align: center;
-    }
-    .card-body h3 {
-      color: var(--gold);
-      font-size: 1.3rem;
-      margin-bottom: 4px;
-    }
-    .card-body .desc {
-      color: var(--muted);
-      font-size: 0.85rem;
-      margin-bottom: 10px;
-    }
+    .card:hover .product-cover i { transform: scale(1.06); }
+    .card-body { padding: 22px; text-align: center; }
+    .card-body h3 { color: var(--gold); font-size: 1.3rem; margin-bottom: 4px; }
+    .card-body .desc { color: var(--muted); font-size: 0.85rem; margin-bottom: 10px; }
     .card-body .price {
       display: inline-block;
       padding: 6px 18px;
@@ -337,8 +273,20 @@
       font-weight: 700;
       font-size: 0.95rem;
     }
+    .product-link { display: block; height: 100%; }
+    .stock-badge {
+      display: inline-flex;
+      margin-top: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: .75rem;
+      font-weight: 800;
+      background: rgba(246,199,68,.12);
+      color: var(--gold2);
+      border: 1px solid var(--goldline);
+    }
 
-    /* ===== KONTAK GAYA BARU ===== */
+    /* ===== KONTAK ===== */
     .contact-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -350,63 +298,137 @@
       gap: 11px;
       margin-top: 18px;
     }
-    .contact-item-new {
+    .contact-item {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 14px;
       padding: 14px 18px;
       border: 1px solid var(--line);
       border-radius: 11px;
       transition: 0.2s;
       background: rgba(0, 0, 0, 0.3);
       backdrop-filter: blur(2px);
-      color: var(--text);
     }
-    .contact-item-new:hover {
+    .contact-item:hover {
       border-color: var(--goldline);
       background: rgba(246, 199, 68, 0.08);
     }
-    .contact-item-new span {
-      font-size: 1.6rem;
-      line-height: 1;
-      width: 36px;
+    .contact-item span { color: var(--muted); font-size: 0.85rem; }
+    .contact-item strong { color: var(--text); font-size: 0.95rem; }
+    .contact-item i { color: var(--gold); font-size: 1.2rem; width: 24px; }
+
+    .product-state {
+      grid-column: 1 / -1;
       text-align: center;
-      flex-shrink: 0;
-      color: var(--gold);
+      padding: 32px;
+      color: var(--muted);
+      border: 1px dashed var(--goldline);
+      border-radius: 16px;
     }
-    .contact-item-new div {
+
+    /* ===== FOOTER SLIDESHOW (UKURAN SESUAI GAMBAR) ===== */
+    .footer-slideshow {
+      padding: 40px 0 20px 0;
+      background: rgba(0, 0, 0, 0.4);
+      border-top: 1px solid var(--goldline);
+      border-bottom: 1px solid var(--goldline);
+    }
+    .footer-slideshow .swiper {
+      width: 100%;
+      padding: 20px 0;
+    }
+    .footer-slideshow .swiper-slide {
+      text-align: center;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--goldline);
+      transition: 0.3s;
+      background: rgba(0, 0, 0, 0.6);
       display: flex;
       flex-direction: column;
-      line-height: 1.4;
     }
-    .contact-item-new small {
-      color: var(--muted);
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+    .footer-slideshow .swiper-slide:hover {
+      transform: scale(1.02);
+      border-color: var(--gold);
+      box-shadow: 0 0 30px rgba(246, 199, 68, 0.15);
     }
-    .contact-item-new strong {
-      color: var(--text);
-      font-size: 1rem;
+    /* ===== GAMBAR SESUAI PROPORSI ASLI ===== */
+    .footer-slideshow .swiper-slide .slide-image {
+      width: 100%;
+      height: auto;
+      aspect-ratio: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 8px;
+    }
+    .footer-slideshow .swiper-slide .slide-image img {
+      width: 100%;
+      height: auto;
+      max-height: 350px;
+      object-fit: contain;
+      display: block;
+      border-radius: 8px;
+    }
+    .footer-slideshow .swiper-slide .slide-label {
+      padding: 12px 16px;
+      font-size: 0.8rem;
+      color: var(--gold2);
       font-weight: 600;
+      letter-spacing: 0.05em;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      border-top: 1px solid var(--goldline);
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .footer-slideshow .swiper-pagination {
+      position: relative;
+      margin-top: 16px;
+    }
+    .footer-slideshow .swiper-pagination-bullet {
+      background: var(--muted);
+      opacity: 0.5;
+    }
+    .footer-slideshow .swiper-pagination-bullet-active {
+      background: var(--gold);
+      opacity: 1;
+    }
+    .footer-slideshow .swiper-button-next,
+    .footer-slideshow .swiper-button-prev {
+      color: var(--gold);
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--goldline);
+      transition: 0.3s;
+    }
+    .footer-slideshow .swiper-button-next:hover,
+    .footer-slideshow .swiper-button-prev:hover {
+      background: var(--gold);
+      color: #111;
+    }
+    .footer-slideshow .swiper-button-next::after,
+    .footer-slideshow .swiper-button-prev::after {
+      font-size: 1rem;
+      font-weight: 800;
     }
 
-    .card-body-left {
-      text-align: left;
-    }
-
+    /* ===== FOOTER ===== */
     footer {
       padding: 30px 0;
-      border-top: 1px solid var(--line);
       text-align: center;
       color: var(--muted);
       font-size: 0.85rem;
       background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(4px);
     }
-    footer .gold {
-      color: var(--gold);
-    }
+    footer .gold { color: var(--gold); }
 
     @media (max-width: 980px) {
       .navlinks {
@@ -425,6 +447,7 @@
       .menu-btn { display: block; }
       .grid, .contact-grid { grid-template-columns: 1fr 1fr; }
       .stats-strip { grid-template-columns: repeat(2, 1fr); }
+      .footer-slideshow .swiper-slide .slide-image img { max-height: 250px; }
     }
 
     @media (max-width: 640px) {
@@ -436,10 +459,12 @@
       .hero { min-height: 70vh; padding: 60px 0; }
       .hero-logo { width: 120px; height: 120px; }
       .product-cover img { width: 120px; height: 120px; }
-      .product-cover i { font-size: 3.5rem; }
-      .contact-item-new { gap: 10px; padding: 12px 14px; }
-      .contact-item-new span { font-size: 1.4rem; width: 30px; }
-      .contact-item-new strong { font-size: 0.9rem; }
+      .contact-item { flex-wrap: wrap; gap: 4px; }
+      .footer-slideshow .swiper-slide .slide-image img { max-height: 200px; }
+      .footer-slideshow .swiper-button-next,
+      .footer-slideshow .swiper-button-prev { width: 32px; height: 32px; }
+      .footer-slideshow .swiper-button-next::after,
+      .footer-slideshow .swiper-button-prev::after { font-size: 0.8rem; }
     }
   </style>
 </head>
@@ -496,41 +521,8 @@
         <div class="eyebrow">KOLEKSI</div>
         <h2>Parfume Pilihan</h2>
         <p class="lead" style="margin-bottom:32px;">Temukan aroma yang paling cocok untukmu.</p>
-        <div class="grid">
-
-          <article class="card">
-            <div class="product-cover">
-              <img src="https://i.ibb.co/qM0XQKpw/image.png" alt="Victoria Scandalous" />
-            </div>
-            <div class="card-body">
-              <h3>Victoria Scandalous</h3>
-              <p class="desc">AROMA SEGAR</p>
-              <span class="price">Rp35.000</span>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="product-cover">
-              <img src="https://i.ibb.co/mCyNMGP0/image.png" alt="Romanwish" />
-            </div>
-            <div class="card-body">
-              <h3>Romanwish</h3>
-              <p class="desc">AROMA ELEGAN</p>
-              <span class="price">Rp35.000</span>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="product-cover">
-              <img src="https://i.ibb.co/7x6Kc1bb/image.png" alt="Baccarat" />
-            </div>
-            <div class="card-body">
-              <h3>Baccarat</h3>
-              <p class="desc">AROMA MEWAH</p>
-              <span class="price">Rp35.000</span>
-            </div>
-          </article>
-
+        <div class="grid" id="productGrid">
+          <div class="product-state"><i class="fas fa-spinner fa-spin"></i> Memuat produk...</div>
         </div>
       </div>
     </section>
@@ -562,47 +554,34 @@
         <p class="lead" style="margin-bottom:20px;">
           Hubungi kami untuk pemesanan, kerjasama, atau informasi lebih lanjut.
         </p>
-
         <div class="contact-grid">
-          <!-- Kartu Kiri: Connect -->
           <div class="card" style="border-color:var(--goldline);">
-            <div class="card-body card-body-left">
+            <div class="card-body" style="text-align:left;">
               <h3 style="color:var(--gold); font-size:1.2rem; margin-bottom:8px;">
                 <i class="fas fa-headset" style="margin-right:10px;"></i> Connect With Us
               </h3>
               <div class="contact-list">
-
-                <!-- Website -->
-                <a class="contact-item-new" href="https://bbmparfume-web.pages.dev/" target="_blank" rel="noopener">
-                  <span>🌐</span>
-                  <div><small>Website</small><strong>bbmparfume-web</strong></div>
+                <a class="contact-item" href="https://wa.me/6285830647648" target="_blank">
+                  <span><i class="fab fa-whatsapp"></i> WhatsApp</span>
+                  <strong>0858-3064-7648</strong>
                 </a>
-
-                <!-- Instagram -->
-                <a class="contact-item-new" href="https://www.instagram.com/bigbrothermagic_parfume?igsh=OWVxb2kzeTY0Zmtw" target="_blank" rel="noopener">
-                  <span>◎</span>
-                  <div><small>Instagram</small><strong>@bigbrothermagic_parfume</strong></div>
+                <a class="contact-item" href="mailto:bigbrothermagic@gmail.com">
+                  <span><i class="fas fa-envelope"></i> Email</span>
+                  <strong>bigbrothermagic@gmail.com</strong>
                 </a>
-
-                <!-- TikTok -->
-                <a class="contact-item-new" href="https://www.tiktok.com/@bbm.parfume?_r=1&_t=ZS-98OiEYfLLxx" target="_blank" rel="noopener">
-                  <span>♪</span>
-                  <div><small>TikTok</small><strong>@bbm.parfume</strong></div>
+                <a class="contact-item" href="https://instagram.com/bigbrothermagic_parfume" target="_blank">
+                  <span><i class="fab fa-instagram"></i> Instagram</span>
+                  <strong>@bigbrothermagic_parfume</strong>
                 </a>
-
-                <!-- WhatsApp -->
-                <a class="contact-item-new" href="https://wa.me/6285830647648" target="_blank" rel="noopener">
-                  <span>◉</span>
-                  <div><small>WhatsApp Mrs</small><strong>0858-3064-7648</strong></div>
+                <a class="contact-item" href="https://tiktok.com/@bigbrothermagicparfum" target="_blank">
+                  <span><i class="fab fa-tiktok"></i> TikTok</span>
+                  <strong>@bigbrothermagicparfum</strong>
                 </a>
-
               </div>
             </div>
           </div>
-
-          <!-- Kartu Kanan: Business Partnership -->
           <div class="card" style="border-color:var(--goldline);">
-            <div class="card-body card-body-left">
+            <div class="card-body" style="text-align:left;">
               <h3 style="color:var(--gold); font-size:1.2rem; margin-bottom:8px;">
                 <i class="fas fa-handshake" style="margin-right:10px;"></i> Business Partnership
               </h3>
@@ -623,6 +602,60 @@
 
   </main>
 
+  <!-- ===== FOOTER SLIDESHOW ===== -->
+  <div class="footer-slideshow">
+    <div class="container">
+      <h3 style="text-align:center; color:var(--gold); font-family:'Cinzel',serif; font-size:1.4rem; margin-bottom:8px;">
+        ✨ Galeri BBM PARFUME ✨
+      </h3>
+      <p style="text-align:center; color:var(--muted); font-size:0.85rem; margin-bottom:20px;">
+        Temukan inspirasi aroma favoritmu
+      </p>
+      <div class="swiper footerSwiper">
+        <div class="swiper-wrapper">
+
+          <!-- Slide 1 -->
+          <div class="swiper-slide">
+            <div class="slide-image">
+              <img src="https://i.ibb.co/8L2jWHSc/image.png" alt="BBM Parfume 1" loading="lazy" />
+            </div>
+            <div class="slide-label"> TOP 12 AROMA COWOK</div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="swiper-slide">
+            <div class="slide-image">
+              <img src="https://i.ibb.co/bjGs153z/image.png" alt="BBM Parfume 2" loading="lazy" />
+            </div>
+            <div class="slide-label">✨ Aroma Eksklusif</div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="swiper-slide">
+            <div class="slide-image">
+              <img src="https://i.ibb.co/0pmbBX8B/image.png" alt="BBM Parfume 3" loading="lazy" />
+            </div>
+            <div class="slide-label">🏆 EAU DE PARFUM</div>
+          </div>
+
+          <!-- Slide 4 -->
+          <div class="swiper-slide">
+            <div class="slide-image">
+              <img src="https://i.ibb.co/C3SZvL4x/image.png" alt="BBM Parfume 4" loading="lazy" />
+            </div>
+            <div class="slide-label">🌿 120+ Aroma Premium</div>
+          </div>
+
+        </div>
+
+        <!-- Navigation -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ===== FOOTER ===== -->
   <footer>
     <div class="container">
@@ -631,18 +664,105 @@
     </div>
   </footer>
 
-  <!-- ===== SCRIPT MENU ===== -->
+  <!-- ===== SWIPER JS ===== -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <!-- ===== SUPABASE ===== -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script>
+    // ===== INIT FOOTER SWIPER =====
+    const footerSwiper = new Swiper('.footerSwiper', {
+      loop: true,
+      autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
+      },
+      speed: 600,
+      slidesPerView: 1,
+      spaceBetween: 20,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        980: {
+          slidesPerView: 3,
+          spaceBetween: 24,
+        },
+        1200: {
+          slidesPerView: 4,
+          spaceBetween: 24,
+        }
+      }
+    });
+
+    // ===== SUPABASE + FALLBACK =====
+    const SUPABASE_URL = 'https://glpgqvxicoskabwvashd.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_SGrBZoI_E0DKxRnIjwPALg_08oWGA5U';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const fallbackProducts = [
+      { name:'Victoria Scandalous', description:'AROMA SEGAR', price:35000, stock:10, image_url:'https://i.ibb.co/qM0XQKpw/image.png' },
+      { name:'Romanwish', description:'AROMA ELEGAN', price:35000, stock:10, image_url:'https://i.ibb.co/mCyNMGP0/image.png' },
+      { name:'Baccarat', description:'AROMA MEWAH', price:35000, stock:10, image_url:'https://i.ibb.co/7x6Kc1bb/image.png' }
+    ];
+
+    const rupiah = value => new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', maximumFractionDigits:0 }).format(Number(value || 0));
+    const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+
+    function renderProducts(products) {
+      const grid = document.getElementById('productGrid');
+      if (!products.length) {
+        grid.innerHTML = '<div class="product-state">Belum ada produk aktif.</div>';
+        return;
+      }
+      grid.innerHTML = products.map(product => {
+        const waText = encodeURIComponent(`Halo, saya ingin memesan ${product.name}`);
+        return `<article class="card">
+          <a class="product-link" href="https://wa.me/6285830647648?text=${waText}" target="_blank" rel="noopener">
+            <div class="product-cover"><img src="${escapeHtml(product.image_url || 'https://placehold.co/600x600/111/f6c744?text=Produk')}" alt="${escapeHtml(product.name)}" loading="lazy"></div>
+            <div class="card-body">
+              <h3>${escapeHtml(product.name)}</h3>
+              <p class="desc">${escapeHtml(product.description || '')}</p>
+              <span class="price">${rupiah(product.price)}</span>
+              ${Number(product.stock) > 0 ? `<span class="stock-badge">✅ Stok: ${Number(product.stock)}</span>` : `<span class="stock-badge" style="opacity:0.5;">⚠️ Habis</span>`}
+            </div>
+          </a>
+        </article>`;
+      }).join('');
+    }
+
+    async function loadProducts() {
+      try {
+        const { data, error } = await supabaseClient.from('products').select('*').eq('is_active', true).order('created_at', { ascending:false });
+        if (error || !data || data.length === 0) {
+          console.warn('Menggunakan fallback products');
+          renderProducts(fallbackProducts);
+          return;
+        }
+        renderProducts(data);
+      } catch (err) {
+        console.warn('Error loading products, using fallback:', err);
+        renderProducts(fallbackProducts);
+      }
+    }
+
+    // Menu toggle
     const menuBtn = document.getElementById('menuBtn');
     const navLinks = document.getElementById('navLinks');
-    menuBtn.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
-    });
-    document.querySelectorAll('.navlinks a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-      });
-    });
+    menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+    document.querySelectorAll('.navlinks a').forEach(link => link.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    // Load products
+    loadProducts();
   </script>
 
 </body>
