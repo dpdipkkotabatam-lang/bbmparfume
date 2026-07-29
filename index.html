@@ -459,6 +459,10 @@
         gap: 4px;
       }
     }
+
+    .product-state { grid-column: 1 / -1; text-align:center; padding:32px; color:var(--muted); border:1px dashed var(--goldline); border-radius:16px; }
+    .stock-badge { display:inline-flex; margin-top:10px; padding:6px 10px; border-radius:999px; font-size:.75rem; font-weight:800; background:rgba(246,199,68,.12); color:var(--gold2); border:1px solid var(--goldline); }
+    .product-link { display:block; height:100%; }
   </style>
 </head>
 <body>
@@ -514,44 +518,8 @@
         <div class="eyebrow">KOLEKSI</div>
         <h2>Parfume Pilihan</h2>
         <p class="lead" style="margin-bottom:32px;">Temukan aroma yang paling cocok untukmu.</p>
-        <div class="grid">
-
-          <!-- Produk 1: Victoria Scandalous -->
-          <article class="card">
-            <div class="product-cover">
-              <img src="https://i.ibb.co/qM0XQKpw/image.png" alt="Victoria Scandalous" />
-            </div>
-            <div class="card-body">
-              <h3>Victoria Scandalous</h3>
-              <p class="desc">AROMA SEGAR</p>
-              <span class="price">Rp35.000</span>
-            </div>
-          </article>
-
-          <!-- Produk 2: Romanwish -->
-          <article class="card">
-            <div class="product-cover">
-              <img src="https://i.ibb.co/mCyNMGP0/image.png" alt="Romanwish" />
-            </div>
-            <div class="card-body">
-              <h3>Romanwish</h3>
-              <p class="desc">AROMA ELEGAN</p>
-              <span class="price">Rp35.000</span>
-            </div>
-          </article>
-
-          <!-- Produk 3: Baccarat -->
-          <article class="card">
-            <div class="product-cover">
-              <img src="https://i.ibb.co/7x6Kc1bb/image.png" alt="Baccarat" />
-            </div>
-            <div class="card-body">
-              <h3>Baccarat</h3>
-              <p class="desc">AROMA MEWAH</p>
-              <span class="price">Rp35.000</span>
-            </div>
-          </article>
-
+        <div class="grid" id="productGrid">
+          <div class="product-state"><i class="fas fa-spinner fa-spin"></i> Memuat produk...</div>
         </div>
       </div>
     </section>
@@ -639,18 +607,58 @@
     </div>
   </footer>
 
-  <!-- ===== SCRIPT MENU ===== -->
+  <!-- ===== SUPABASE + SCRIPT ===== -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    const SUPABASE_URL = 'https://glpgqvxicoskabwvashd.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_SGrBZoI_E0DKxRnIjwPALg_08oWGA5U';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const fallbackProducts = [
+      { name:'Victoria Scandalous', description:'AROMA SEGAR', price:35000, stock:0, image_url:'https://i.ibb.co/qM0XQKpw/image.png' },
+      { name:'Romanwish', description:'AROMA ELEGAN', price:35000, stock:0, image_url:'https://i.ibb.co/mCyNMGP0/image.png' },
+      { name:'Baccarat', description:'AROMA MEWAH', price:35000, stock:0, image_url:'https://i.ibb.co/7x6Kc1bb/image.png' }
+    ];
+
+    const rupiah = value => new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', maximumFractionDigits:0 }).format(Number(value || 0));
+    const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+
+    function renderProducts(products) {
+      const grid = document.getElementById('productGrid');
+      if (!products.length) {
+        grid.innerHTML = '<div class="product-state">Belum ada produk aktif.</div>';
+        return;
+      }
+      grid.innerHTML = products.map(product => {
+        const waText = encodeURIComponent(`Halo, saya ingin memesan ${product.name}`);
+        return `<article class="card">
+          <a class="product-link" href="https://wa.me/6285830647648?text=${waText}" target="_blank" rel="noopener">
+            <div class="product-cover"><img src="${escapeHtml(product.image_url || 'https://placehold.co/600x600/111/f6c744?text=Produk')}" alt="${escapeHtml(product.name)}" loading="lazy"></div>
+            <div class="card-body">
+              <h3>${escapeHtml(product.name)}</h3>
+              <p class="desc">${escapeHtml(product.description || '')}</p>
+              <span class="price">${rupiah(product.price)}</span>
+              ${Number(product.stock) > 0 ? `<span class="stock-badge">Stok: ${Number(product.stock)}</span>` : ''}
+            </div>
+          </a>
+        </article>`;
+      }).join('');
+    }
+
+    async function loadProducts() {
+      const { data, error } = await supabaseClient.from('products').select('*').eq('is_active', true).order('created_at', { ascending:false });
+      if (error) {
+        console.warn('Produk Supabase belum tersedia:', error.message);
+        renderProducts(fallbackProducts);
+        return;
+      }
+      renderProducts(data || []);
+    }
+
     const menuBtn = document.getElementById('menuBtn');
     const navLinks = document.getElementById('navLinks');
-    menuBtn.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
-    });
-    document.querySelectorAll('.navlinks a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-      });
-    });
+    menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+    document.querySelectorAll('.navlinks a').forEach(link => link.addEventListener('click', () => navLinks.classList.remove('open')));
+    loadProducts();
   </script>
 
 </body>
