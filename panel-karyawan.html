@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Karyawan - BBM Parfume</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #080808;
+      color: white;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 28px;
+      background: #0d0d0d;
+      border-bottom: 1px solid #292929;
+    }
+
+    .brand {
+      color: #f5c542;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 11px 18px;
+      background: #741c1c;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    main {
+      padding: 30px;
+    }
+
+    .welcome {
+      margin-bottom: 25px;
+    }
+
+    .welcome h1 {
+      margin-bottom: 8px;
+    }
+
+    .welcome p {
+      color: #aaa;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: #131313;
+      border: 1px solid #303030;
+      border-radius: 14px;
+      padding: 22px;
+    }
+
+    .card h2 {
+      color: #f5c542;
+      margin-top: 0;
+    }
+
+    .card a {
+      display: inline-block;
+      margin-top: 12px;
+      color: #f5c542;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    @media (max-width: 750px) {
+      .cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="brand">BBM PARFUME KARYAWAN</div>
+    <button id="logoutBtn">Logout</button>
+  </header>
+
+  <main>
+    <section class="welcome">
+      <h1>Selamat Datang, <span id="namaKaryawan">Karyawan</span></h1>
+      <p>Role: <span id="roleKaryawan">-</span></p>
+    </section>
+
+    <section class="cards">
+      <div class="card">
+        <h2>Produk</h2>
+        <p>Lihat daftar produk dan stok parfum.</p>
+        <a href="/produk.html">Lihat Produk</a>
+      </div>
+
+      <div class="card">
+        <h2>Pesanan</h2>
+        <p>Kelola pesanan pelanggan.</p>
+        <a href="/pesanan.html">Lihat Pesanan</a>
+      </div>
+
+      <div class="card">
+        <h2>Riwayat</h2>
+        <p>Lihat transaksi yang sudah diproses.</p>
+        <a href="/riwayat.html">Lihat Riwayat</a>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { createClient } from
+      "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+    const SUPABASE_URL =
+      "https://glpgqvxicoskabwvashd.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+      "sb_publishable_SGrBZoI_E0DKxRnIjwPALg_08oWGA5U";
+
+    const supabase = createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
+
+    async function cekAkses() {
+      const {
+        data: { session },
+        error: sessionError
+      } = await supabase.auth.getSession();
+
+      if (sessionError || !session) {
+        window.location.replace("/karyawan.html");
+        return;
+      }
+
+      const { data: profil, error: profilError } =
+        await supabase
+          .from("karyawan")
+          .select("nama_lengkap, role, status")
+          .eq("auth_user_id", session.user.id)
+          .maybeSingle();
+
+      if (profilError || !profil) {
+        await supabase.auth.signOut();
+        window.location.replace("/karyawan.html");
+        return;
+      }
+
+      if (profil.status !== "aktif") {
+        await supabase.auth.signOut();
+        alert("Akun sedang dinonaktifkan.");
+        window.location.replace("/karyawan.html");
+        return;
+      }
+
+      if (profil.role === "admin") {
+        window.location.replace("/admin/");
+        return;
+      }
+
+      document.getElementById("namaKaryawan").textContent =
+        profil.nama_lengkap;
+
+      document.getElementById("roleKaryawan").textContent =
+        profil.role;
+    }
+
+    document
+      .getElementById("logoutBtn")
+      .addEventListener("click", async () => {
+        await supabase.auth.signOut();
+        window.location.replace("/karyawan.html");
+      });
+
+    cekAkses();
+  </script>
+</body>
+</html>
