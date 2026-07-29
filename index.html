@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <link rel="icon" href="https://i.ibb.co/0RSmbB11/image.png" type="image/png" />
   <meta name="description" content="BIG BROTHER MAGIC - Parfume premium dengan aroma eksklusif untuk pria dan wanita modern." />
   <style>
@@ -76,32 +78,14 @@
     }
 
     @keyframes waveFlow {
-      0% {
-        background-position: 0% 50%, 0% 50%, 0% 0%;
-      }
-      25% {
-        background-position: 30% 60%, 20% 40%, 10% 20%;
-      }
-      50% {
-        background-position: 60% 40%, 50% 60%, 30% 40%;
-      }
-      75% {
-        background-position: 80% 70%, 70% 30%, 60% 60%;
-      }
-      100% {
-        background-position: 100% 50%, 100% 50%, 80% 80%;
-      }
+      0% { background-position: 0% 50%, 0% 50%, 0% 0%; }
+      25% { background-position: 30% 60%, 20% 40%, 10% 20%; }
+      50% { background-position: 60% 40%, 50% 60%, 30% 40%; }
+      75% { background-position: 80% 70%, 70% 30%, 60% 60%; }
+      100% { background-position: 100% 50%, 100% 50%, 80% 80%; }
     }
 
-    .topbar,
-    .hero,
-    .stats-strip,
-    .section,
-    footer {
-      position: relative;
-      z-index: 1;
-    }
-
+    .topbar, .hero, .stats-strip, .section, footer { position: relative; z-index: 1; }
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; }
     .container { width: min(1180px, calc(100% - 32px)); margin: auto; }
@@ -120,47 +104,14 @@
       backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--line);
     }
-    .nav {
-      min-height: 76px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--gold);
-      font: 800 1.25rem 'Cinzel', serif;
-    }
-    .brand img {
-      width: 46px;
-      height: 46px;
-      object-fit: contain;
-      border-radius: 50%;
-    }
-    .navlinks {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      color: #ddd;
-      font-size: 0.88rem;
-    }
-    .navlinks a:hover {
-      color: var(--gold);
-    }
-    .menu-btn {
-      display: none;
-      padding: 9px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      background: #101010;
-      color: #fff;
-      font-size: 1.2rem;
-      cursor: pointer;
-    }
+    .nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: flex; align-items: center; gap: 12px; color: var(--gold); font: 800 1.25rem 'Cinzel', serif; }
+    .brand img { width: 46px; height: 46px; object-fit: contain; border-radius: 50%; }
+    .navlinks { display: flex; align-items: center; gap: 18px; color: #ddd; font-size: 0.88rem; }
+    .navlinks a:hover { color: var(--gold); }
+    .menu-btn { display: none; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line); background: #101010; color: #fff; font-size: 1.2rem; cursor: pointer; }
 
+    /* ===== HERO ===== */
     .hero {
       min-height: 78vh;
       display: grid;
@@ -226,9 +177,7 @@
       transition: 0.22s;
       cursor: pointer;
     }
-    .btn:hover {
-      transform: translateY(-2px);
-    }
+    .btn:hover { transform: translateY(-2px); }
     .btn-primary {
       background: linear-gradient(135deg, var(--gold), var(--gold3));
       color: #111;
@@ -240,6 +189,7 @@
       color: var(--text);
     }
 
+    /* ===== STATS ===== */
     .stats-strip {
       margin-top: -48px;
       position: relative;
@@ -267,6 +217,7 @@
       font-size: 0.85rem;
     }
 
+    /* ===== PRODUK ===== */
     .grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -295,40 +246,24 @@
       background: rgba(0, 0, 0, 0.4);
       flex-wrap: wrap;
     }
-    /* ===== PERBESAR GAMBAR ===== */
     .product-cover img {
-      width: 160px;        /* dari 120px */
+      width: 160px;
       height: 160px;
       object-fit: contain;
       filter: drop-shadow(0 8px 30px rgba(246, 199, 68, 0.15));
       transition: transform 0.3s ease;
     }
-    .card:hover .product-cover img {
-      transform: scale(1.06);
-    }
+    .card:hover .product-cover img { transform: scale(1.06); }
     .product-cover i {
       font-size: 4.5rem;
       color: var(--gold);
       filter: drop-shadow(0 8px 30px rgba(246, 199, 68, 0.15));
       transition: transform 0.3s ease;
     }
-    .card:hover .product-cover i {
-      transform: scale(1.06);
-    }
-    .card-body {
-      padding: 22px;
-      text-align: center;
-    }
-    .card-body h3 {
-      color: var(--gold);
-      font-size: 1.3rem;
-      margin-bottom: 4px;
-    }
-    .card-body .desc {
-      color: var(--muted);
-      font-size: 0.85rem;
-      margin-bottom: 10px;
-    }
+    .card:hover .product-cover i { transform: scale(1.06); }
+    .card-body { padding: 22px; text-align: center; }
+    .card-body h3 { color: var(--gold); font-size: 1.3rem; margin-bottom: 4px; }
+    .card-body .desc { color: var(--muted); font-size: 0.85rem; margin-bottom: 10px; }
     .card-body .price {
       display: inline-block;
       padding: 6px 18px;
@@ -338,7 +273,20 @@
       font-weight: 700;
       font-size: 0.95rem;
     }
+    .product-link { display: block; height: 100%; }
+    .stock-badge {
+      display: inline-flex;
+      margin-top: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: .75rem;
+      font-weight: 800;
+      background: rgba(246,199,68,.12);
+      color: var(--gold2);
+      border: 1px solid var(--goldline);
+    }
 
+    /* ===== KONTAK ===== */
     .contact-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -365,32 +313,122 @@
       border-color: var(--goldline);
       background: rgba(246, 199, 68, 0.08);
     }
-    .contact-item span {
+    .contact-item span { color: var(--muted); font-size: 0.85rem; }
+    .contact-item strong { color: var(--text); font-size: 0.95rem; }
+    .contact-item i { color: var(--gold); font-size: 1.2rem; width: 24px; }
+
+    .product-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 32px;
       color: var(--muted);
-      font-size: 0.85rem;
-    }
-    .contact-item strong {
-      color: var(--text);
-      font-size: 0.95rem;
-    }
-    .contact-item i {
-      color: var(--gold);
-      font-size: 1.2rem;
-      width: 24px;
+      border: 1px dashed var(--goldline);
+      border-radius: 16px;
     }
 
+    /* ===== FOOTER SLIDESHOW (UKURAN SESUAI GAMBAR) ===== */
+    .footer-slideshow {
+      padding: 40px 0 20px 0;
+      background: rgba(0, 0, 0, 0.4);
+      border-top: 1px solid var(--goldline);
+      border-bottom: 1px solid var(--goldline);
+    }
+    .footer-slideshow .swiper {
+      width: 100%;
+      padding: 20px 0;
+    }
+    .footer-slideshow .swiper-slide {
+      text-align: center;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--goldline);
+      transition: 0.3s;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+    }
+    .footer-slideshow .swiper-slide:hover {
+      transform: scale(1.02);
+      border-color: var(--gold);
+      box-shadow: 0 0 30px rgba(246, 199, 68, 0.15);
+    }
+    /* ===== GAMBAR SESUAI PROPORSI ASLI ===== */
+    .footer-slideshow .swiper-slide .slide-image {
+      width: 100%;
+      height: auto;
+      aspect-ratio: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 8px;
+    }
+    .footer-slideshow .swiper-slide .slide-image img {
+      width: 100%;
+      height: auto;
+      max-height: 350px;
+      object-fit: contain;
+      display: block;
+      border-radius: 8px;
+    }
+    .footer-slideshow .swiper-slide .slide-label {
+      padding: 12px 16px;
+      font-size: 0.8rem;
+      color: var(--gold2);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      border-top: 1px solid var(--goldline);
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .footer-slideshow .swiper-pagination {
+      position: relative;
+      margin-top: 16px;
+    }
+    .footer-slideshow .swiper-pagination-bullet {
+      background: var(--muted);
+      opacity: 0.5;
+    }
+    .footer-slideshow .swiper-pagination-bullet-active {
+      background: var(--gold);
+      opacity: 1;
+    }
+    .footer-slideshow .swiper-button-next,
+    .footer-slideshow .swiper-button-prev {
+      color: var(--gold);
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--goldline);
+      transition: 0.3s;
+    }
+    .footer-slideshow .swiper-button-next:hover,
+    .footer-slideshow .swiper-button-prev:hover {
+      background: var(--gold);
+      color: #111;
+    }
+    .footer-slideshow .swiper-button-next::after,
+    .footer-slideshow .swiper-button-prev::after {
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    /* ===== FOOTER ===== */
     footer {
       padding: 30px 0;
-      border-top: 1px solid var(--line);
       text-align: center;
       color: var(--muted);
       font-size: 0.85rem;
       background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(4px);
     }
-    footer .gold {
-      color: var(--gold);
-    }
+    footer .gold { color: var(--gold); }
 
     @media (max-width: 980px) {
       .navlinks {
@@ -405,64 +443,29 @@
         border: 1px solid var(--line);
         border-radius: 14px;
       }
-      .navlinks.open {
-        display: flex;
-      }
-      .menu-btn {
-        display: block;
-      }
-      .grid,
-      .contact-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      .stats-strip {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .navlinks.open { display: flex; }
+      .menu-btn { display: block; }
+      .grid, .contact-grid { grid-template-columns: 1fr 1fr; }
+      .stats-strip { grid-template-columns: repeat(2, 1fr); }
+      .footer-slideshow .swiper-slide .slide-image img { max-height: 250px; }
     }
 
     @media (max-width: 640px) {
-      .container {
-        width: min(100% - 24px, 1180px);
-      }
-      .section {
-        padding: 76px 0;
-      }
-      .grid,
-      .contact-grid,
-      .stats-strip {
-        grid-template-columns: 1fr;
-      }
-      .actions {
-        flex-direction: column;
-      }
-      .btn {
-        width: 100%;
-      }
-      .hero {
-        min-height: 70vh;
-        padding: 60px 0;
-      }
-      .hero-logo {
-        width: 120px;
-        height: 120px;
-      }
-      /* ===== PERBESAR DI MOBILE ===== */
-      .product-cover img {
-        width: 120px;       /* dari 90px */
-        height: 120px;
-      }
-      .product-cover i {
-        font-size: 3.5rem;
-      }
-      .contact-item {
-        flex-wrap: wrap;
-        gap: 4px;
-      }
+      .container { width: min(100% - 24px, 1180px); }
+      .section { padding: 76px 0; }
+      .grid, .contact-grid, .stats-strip { grid-template-columns: 1fr; }
+      .actions { flex-direction: column; }
+      .btn { width: 100%; }
+      .hero { min-height: 70vh; padding: 60px 0; }
+      .hero-logo { width: 120px; height: 120px; }
+      .product-cover img { width: 120px; height: 120px; }
+      .contact-item { flex-wrap: wrap; gap: 4px; }
+      .footer-slideshow .swiper-slide .slide-image img { max-height: 200px; }
+      .footer-slideshow .swiper-button-next,
+      .footer-slideshow .swiper-button-prev { width: 32px; height: 32px; }
+      .footer-slideshow .swiper-button-next::after,
+      .footer-slideshow .swiper-button-prev::after { font-size: 0.8rem; }
     }
-
-    .product-state { grid-column: 1 / -1; text-align:center; padding:32px; color:var(--muted); border:1px dashed var(--goldline); border-radius:16px; }
-    .stock-badge { display:inline-flex; margin-top:10px; padding:6px 10px; border-radius:999px; font-size:.75rem; font-weight:800; background:rgba(246,199,68,.12); color:var(--gold2); border:1px solid var(--goldline); }
-    .product-link { display:block; height:100%; }
   </style>
 </head>
 <body>
@@ -491,7 +494,7 @@
     <section class="hero" id="home">
       <div class="hero-inner">
         <img class="hero-logo" src="https://i.ibb.co/0RSmbB11/image.png" alt="BIG BROTHER MAGIC PARFUME" />
-        <span class="badge">✨ Premium Parfume Collection</span>
+        <span class="badge">♠️ PARFUME IS MAGIC ♠️</span>
         <h1>SAATNYA KITA WANGI</h1>
         <p class="lead" style="font-size:1.15rem; max-width:640px; margin:0 auto;">
           Menghadirkan aroma eksklusif untuk pria dan wanita modern.
@@ -599,6 +602,60 @@
 
   </main>
 
+  <!-- ===== FOOTER SLIDESHOW ===== -->
+  <div class="footer-slideshow">
+    <div class="container">
+      <h3 style="text-align:center; color:var(--gold); font-family:'Cinzel',serif; font-size:1.4rem; margin-bottom:8px;">
+        ✨ Galeri BBM PARFUME ✨
+      </h3>
+      <p style="text-align:center; color:var(--muted); font-size:0.85rem; margin-bottom:20px;">
+        Temukan inspirasi aroma favoritmu
+      </p>
+      <div class="swiper footerSwiper">
+        <div class="swiper-wrapper">
+
+          <!-- Slide 1 -->
+          <div class="swiper-slide">
+            <div class="slide-image">
+              <img src="https://i.ibb.co/8L2jWHSc/image.png" alt="BBM Parfume 1" loading="lazy" />
+            </div>
+            <div class="slide-label"> TOP 12 AROMA COWOK</div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="swiper-slide">
+            <div class="slide-image">
+              <img src="https://i.ibb.co/bjGs153z/image.png" alt="BBM Parfume 2" loading="lazy" />
+            </div>
+            <div class="slide-label">✨ Aroma Eksklusif</div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="swiper-slide">
+            <div class="slide-image">
+              <img src="https://i.ibb.co/0pmbBX8B/image.png" alt="BBM Parfume 3" loading="lazy" />
+            </div>
+            <div class="slide-label">🏆 EAU DE PARFUM</div>
+          </div>
+
+          <!-- Slide 4 -->
+          <div class="swiper-slide">
+            <div class="slide-image">
+              <img src="https://i.ibb.co/C3SZvL4x/image.png" alt="BBM Parfume 4" loading="lazy" />
+            </div>
+            <div class="slide-label">🌿 120+ Aroma Premium</div>
+          </div>
+
+        </div>
+
+        <!-- Navigation -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ===== FOOTER ===== -->
   <footer>
     <div class="container">
@@ -607,16 +664,55 @@
     </div>
   </footer>
 
-  <!-- ===== SUPABASE + SCRIPT ===== -->
+  <!-- ===== SWIPER JS ===== -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <!-- ===== SUPABASE ===== -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script>
+    // ===== INIT FOOTER SWIPER =====
+    const footerSwiper = new Swiper('.footerSwiper', {
+      loop: true,
+      autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
+      },
+      speed: 600,
+      slidesPerView: 1,
+      spaceBetween: 20,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        980: {
+          slidesPerView: 3,
+          spaceBetween: 24,
+        },
+        1200: {
+          slidesPerView: 4,
+          spaceBetween: 24,
+        }
+      }
+    });
+
+    // ===== SUPABASE + FALLBACK =====
     const SUPABASE_URL = 'https://glpgqvxicoskabwvashd.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_SGrBZoI_E0DKxRnIjwPALg_08oWGA5U';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     const fallbackProducts = [
-      { name:'Victoria Scandalous', description:'AROMA SEGAR', price:35000, stock:0, image_url:'https://i.ibb.co/qM0XQKpw/image.png' },
-      { name:'Romanwish', description:'AROMA ELEGAN', price:35000, stock:0, image_url:'https://i.ibb.co/mCyNMGP0/image.png' },
-      { name:'Baccarat', description:'AROMA MEWAH', price:35000, stock:0, image_url:'https://i.ibb.co/7x6Kc1bb/image.png' }
+      { name:'Victoria Scandalous', description:'AROMA SEGAR', price:35000, stock:10, image_url:'https://i.ibb.co/qM0XQKpw/image.png' },
+      { name:'Romanwish', description:'AROMA ELEGAN', price:35000, stock:10, image_url:'https://i.ibb.co/mCyNMGP0/image.png' },
+      { name:'Baccarat', description:'AROMA MEWAH', price:35000, stock:10, image_url:'https://i.ibb.co/7x6Kc1bb/image.png' }
     ];
 
     const rupiah = value => new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', maximumFractionDigits:0 }).format(Number(value || 0));
@@ -637,7 +733,7 @@
               <h3>${escapeHtml(product.name)}</h3>
               <p class="desc">${escapeHtml(product.description || '')}</p>
               <span class="price">${rupiah(product.price)}</span>
-              ${Number(product.stock) > 0 ? `<span class="stock-badge">Stok: ${Number(product.stock)}</span>` : ''}
+              ${Number(product.stock) > 0 ? `<span class="stock-badge">✅ Stok: ${Number(product.stock)}</span>` : `<span class="stock-badge" style="opacity:0.5;">⚠️ Habis</span>`}
             </div>
           </a>
         </article>`;
@@ -645,19 +741,27 @@
     }
 
     async function loadProducts() {
-      const { data, error } = await supabaseClient.from('products').select('*').eq('is_active', true).order('created_at', { ascending:false });
-      if (error) {
-        console.warn('Produk Supabase belum tersedia:', error.message);
+      try {
+        const { data, error } = await supabaseClient.from('products').select('*').eq('is_active', true).order('created_at', { ascending:false });
+        if (error || !data || data.length === 0) {
+          console.warn('Menggunakan fallback products');
+          renderProducts(fallbackProducts);
+          return;
+        }
+        renderProducts(data);
+      } catch (err) {
+        console.warn('Error loading products, using fallback:', err);
         renderProducts(fallbackProducts);
-        return;
       }
-      renderProducts(data || []);
     }
 
+    // Menu toggle
     const menuBtn = document.getElementById('menuBtn');
     const navLinks = document.getElementById('navLinks');
     menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
     document.querySelectorAll('.navlinks a').forEach(link => link.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    // Load products
     loadProducts();
   </script>
 
