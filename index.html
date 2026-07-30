@@ -13,10 +13,8 @@
     }
     *{box-sizing:border-box}
     body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
-    .snowfall{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:35}
-    .snowflake{position:absolute;top:-24px;color:#fff;font-weight:700;opacity:.9;text-shadow:0 0 6px #fff,0 0 12px rgba(255,255,255,.65);animation:snowFall linear infinite,snowSway ease-in-out infinite}
-    @keyframes snowFall{to{transform:translateY(110vh) rotate(360deg)}}
-    @keyframes snowSway{0%,100%{margin-left:0}50%{margin-left:35px}}
+    #snowCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:100}
+    .snow-proof{position:fixed;right:14px;bottom:14px;z-index:101;background:#f5c542;color:#111;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:800;box-shadow:0 0 18px rgba(245,197,66,.5);pointer-events:none}
     button,input,select,textarea{font:inherit}
     button{cursor:pointer}
     .gate{position:fixed;inset:0;background:#080808;display:grid;place-items:center;z-index:500}
@@ -73,7 +71,8 @@
   </style>
 </head>
 <body>
-<div class="snowfall" id="snowfall" aria-hidden="true"></div>
+<canvas id="snowCanvas" aria-hidden="true"></canvas>
+<div class="snow-proof">❄ SALJU AKTIF</div>
 <div class="gate" id="gate"><div style="text-align:center;color:#aaa"><div class="spinner"></div>Memeriksa akses admin...</div></div>
 
 <aside class="sidebar" id="sidebar">
@@ -218,8 +217,30 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const supabase=createClient("https://glpgqvxicoskabwvashd.supabase.co","sb_publishable_SGrBZoI_E0DKxRnIjwPALg_08oWGA5U");
 const $=id=>document.getElementById(id), rupiah=new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0});
 let admin=null,products=[],orders=[],customers=[],employees=[],editingProduct=null,editingEmployee=null;
-function createSnow(){const layer=$("snowfall"),amount=window.innerWidth<700?45:95;for(let i=0;i<amount;i++){const flake=document.createElement("span");flake.className="snowflake";flake.textContent=Math.random()>.62?"❄":"●";flake.style.left=`${Math.random()*100}%`;flake.style.fontSize=`${7+Math.random()*14}px`;flake.style.animationDuration=`${6+Math.random()*11}s,${2.5+Math.random()*4}s`;flake.style.animationDelay=`-${Math.random()*17}s,-${Math.random()*5}s`;flake.style.opacity=.4+Math.random()*.6;layer.appendChild(flake)}}
-createSnow();
+function startSnow(){
+  const canvas=$("snowCanvas"),ctx=canvas.getContext("2d");
+  let flakes=[];
+  function resize(){
+    const ratio=Math.min(window.devicePixelRatio||1,2);
+    canvas.width=innerWidth*ratio;canvas.height=innerHeight*ratio;
+    canvas.style.width=innerWidth+"px";canvas.style.height=innerHeight+"px";
+    ctx.setTransform(ratio,0,0,ratio,0,0);
+    const count=innerWidth<700?55:120;
+    flakes=Array.from({length:count},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:2+Math.random()*4,s:0.7+Math.random()*1.8,w:Math.random()*Math.PI*2,o:0.45+Math.random()*0.55}));
+  }
+  function draw(){
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+    for(const f of flakes){
+      f.y+=f.s;f.w+=0.012;f.x+=Math.sin(f.w)*0.45;
+      if(f.y>innerHeight+10){f.y=-10;f.x=Math.random()*innerWidth}
+      ctx.beginPath();ctx.arc(f.x,f.y,f.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${f.o})`;ctx.shadowColor="#fff";ctx.shadowBlur=7;ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  addEventListener("resize",resize);resize();draw();
+}
+startSnow();
 
 function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2800)}
 function badge(s){const x=(s||"-").toLowerCase(),c=["aktif","selesai","sudah_bayar"].includes(x)?"green":["baru","diproses","dikirim","belum_bayar"].includes(x)?"yellow":["dibatalkan","nonaktif"].includes(x)?"red":"gray";return `<span class="badge ${c}">${s||"-"}</span>`}
