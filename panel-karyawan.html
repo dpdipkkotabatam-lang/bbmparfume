@@ -4,193 +4,146 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel Karyawan - BBM Parfume</title>
-
+  <link rel="icon" href="https://i.ibb.co/0RSmbB11/image.png" type="image/png">
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #080808;
-      color: white;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 28px;
-      background: #0d0d0d;
-      border-bottom: 1px solid #292929;
-    }
-
-    .brand {
-      color: #f5c542;
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    button {
-      border: 0;
-      border-radius: 8px;
-      padding: 11px 18px;
-      background: #741c1c;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    main {
-      padding: 30px;
-    }
-
-    .welcome {
-      margin-bottom: 25px;
-    }
-
-    .welcome h1 {
-      margin-bottom: 8px;
-    }
-
-    .welcome p {
-      color: #aaa;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .card {
-      background: #131313;
-      border: 1px solid #303030;
-      border-radius: 14px;
-      padding: 22px;
-    }
-
-    .card h2 {
-      color: #f5c542;
-      margin-top: 0;
-    }
-
-    .card a {
-      display: inline-block;
-      margin-top: 12px;
-      color: #f5c542;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    @media (max-width: 750px) {
-      .cards {
-        grid-template-columns: 1fr;
-      }
-    }
+    :root{--bg:#080808;--panel:#121212;--panel2:#181818;--line:#2b2b2b;--gold:#f5c542;--text:#f5f5f5;--muted:#969696;--danger:#ff7070;--ok:#63d896}
+    *{box-sizing:border-box} body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+    button,input,select,textarea{font:inherit}
+    .sidebar{position:fixed;left:0;top:0;bottom:0;width:250px;background:#0d0d0d;border-right:1px solid var(--line);padding:20px 15px;display:flex;flex-direction:column}
+    .brand{display:flex;align-items:center;gap:12px;padding:0 8px 22px}.brand img{width:46px;height:46px;border-radius:50%}.brand strong{color:var(--gold)}
+    .nav{display:grid;gap:7px}.nav button{border:0;background:transparent;color:#ccc;text-align:left;padding:12px;border-radius:10px;font-weight:700}.nav button.active,.nav button:hover{background:#211d11;color:var(--gold)}
+    .userbox{margin-top:auto;border-top:1px solid var(--line);padding-top:14px}.userbox small{display:block;color:var(--muted);margin-top:4px}
+    .logout{width:100%;margin-top:12px;padding:11px;border-radius:9px;border:1px solid #552525;background:#251111;color:#ff9292;font-weight:700}
+    .main{margin-left:250px;min-height:100vh}.topbar{position:sticky;top:0;background:rgba(8,8,8,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;z-index:10}
+    .topbar h1{font-size:20px;margin:0}.topbar p{font-size:12px;color:var(--muted);margin:4px 0 0}.content{padding:24px}
+    .page{display:none}.page.active{display:block}.grid{display:grid;gap:16px}.stats{grid-template-columns:repeat(4,1fr);margin-bottom:18px}.card{background:linear-gradient(180deg,#151515,#101010);border:1px solid var(--line);border-radius:15px;padding:18px}
+    .stat-label{font-size:12px;color:var(--muted)}.stat-value{font-size:28px;font-weight:800;margin-top:12px}.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.section-head h2{font-size:16px;margin:0}.section-head p{font-size:11px;color:var(--muted);margin:3px 0 0}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.input,.select,.form-control{background:#101010;border:1px solid var(--line);color:#fff;border-radius:9px;padding:10px 12px;outline:none}.input{min-width:260px}.input:focus,.select:focus,.form-control:focus{border-color:var(--gold)}
+    .btn{border:0;border-radius:9px;padding:9px 12px;font-weight:700}.btn.gold{background:linear-gradient(135deg,#f5c542,#d5a522);color:#111}.btn.dark{background:#232323;color:#eee;border:1px solid #333}.btn.sm{padding:7px 9px;font-size:12px}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:12px;border-bottom:1px solid #252525;text-align:left;font-size:12px}th{font-size:11px;color:#aaa;background:#111;text-transform:uppercase}
+    .badge{padding:5px 8px;border-radius:999px;font-size:10px;font-weight:700;display:inline-block}.green{background:#143822;color:#75e3a4}.yellow{background:#3b2f12;color:#ffd267}.red{background:#3d1717;color:#ff9696}.gray{background:#292929;color:#ccc}
+    .two{grid-template-columns:1.5fr 1fr}.low-list{display:grid;gap:9px}.low-item{display:flex;justify-content:space-between;padding:11px;border:1px solid #282828;border-radius:10px}
+    .profile{grid-template-columns:1fr 1fr}.form-group{display:grid;gap:6px;margin-bottom:13px}.form-group label{font-size:11px;color:var(--muted)}
+    .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:20px;z-index:100}.modal-bg.show{display:flex}.modal{width:min(520px,100%);background:#141414;border:1px solid #333;border-radius:15px;padding:20px}
+    .modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}.toast{position:fixed;right:20px;bottom:20px;background:#171717;border:1px solid #333;border-radius:10px;padding:12px 14px;display:none;z-index:110;font-size:12px}.toast.show{display:block}
+    .gate{position:fixed;inset:0;background:#080808;display:grid;place-items:center;z-index:200}.gate-box{text-align:center;color:#aaa}.spinner{width:24px;height:24px;border:3px solid #333;border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}@keyframes spin{to{transform:rotate(360deg)}}
+    .menu{display:none}
+    @media(max-width:1000px){.stats{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}
+    @media(max-width:760px){.sidebar{transform:translateX(-100%);transition:.25s;z-index:50}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.menu{display:block}.content{padding:16px}.profile{grid-template-columns:1fr}}
+    @media(max-width:460px){.stats{grid-template-columns:1fr}.input{min-width:100%;width:100%}}
   </style>
 </head>
-
 <body>
-  <header>
-    <div class="brand">BBM PARFUME KARYAWAN</div>
-    <button id="logoutBtn">Logout</button>
-  </header>
+<div class="gate" id="gate"><div class="gate-box"><div class="spinner"></div>Memeriksa akun karyawan...</div></div>
 
-  <main>
-    <section class="welcome">
-      <h1>Selamat Datang, <span id="namaKaryawan">Karyawan</span></h1>
-      <p>Role: <span id="roleKaryawan">-</span></p>
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><img src="https://i.ibb.co/0RSmbB11/image.png"><div><strong>BBM PARFUME</strong><div style="font-size:11px;color:#888">Panel Karyawan</div></div></div>
+  <div class="nav">
+    <button class="active" data-page="dashboard">🏠 Dashboard</button>
+    <button data-page="produk">📦 Produk</button>
+    <button data-page="pesanan">🛒 Pesanan</button>
+    <button data-page="stok">📊 Stok</button>
+    <button data-page="riwayat">🧾 Riwayat</button>
+    <button data-page="profil">👤 Profil</button>
+  </div>
+  <div class="userbox"><strong id="sideName">Karyawan</strong><small id="sideEmail">-</small><button class="logout" id="logout">Keluar</button></div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div style="display:flex;gap:12px;align-items:center"><button class="btn dark menu" id="menuBtn">☰</button><div><h1 id="heading">Dashboard</h1><p id="subtitle">Ringkasan operasional BBM Parfume</p></div></div>
+    <div id="today" style="font-size:12px;color:#aaa"></div>
+  </div>
+
+  <div class="content">
+    <section class="page active" id="page-dashboard">
+      <div class="grid stats">
+        <div class="card"><div class="stat-label">Total Produk</div><div class="stat-value" id="sProducts">0</div></div>
+        <div class="card"><div class="stat-label">Total Stok</div><div class="stat-value" id="sStock">0</div></div>
+        <div class="card"><div class="stat-label">Pesanan Baru</div><div class="stat-value" id="sNew">0</div></div>
+        <div class="card"><div class="stat-label">Pesanan Selesai</div><div class="stat-value" id="sDone">0</div></div>
+      </div>
+      <div class="grid two">
+        <div class="card"><div class="section-head"><div><h2>Pesanan Terbaru</h2><p>Pesanan terbaru yang masuk</p></div></div><div class="table-wrap"><table><thead><tr><th>Kode</th><th>Pelanggan</th><th>Total</th><th>Status</th></tr></thead><tbody id="latestOrders"></tbody></table></div></div>
+        <div class="card"><div class="section-head"><div><h2>Stok Hampir Habis</h2><p>Stok 10 atau kurang</p></div></div><div class="low-list" id="lowStock"></div></div>
+      </div>
     </section>
 
-    <section class="cards">
-      <div class="card">
-        <h2>Produk</h2>
-        <p>Lihat daftar produk dan stok parfum.</p>
-        <a href="/produk.html">Lihat Produk</a>
-      </div>
+    <section class="page" id="page-produk">
+      <div class="card"><div class="section-head"><div><h2>Daftar Produk</h2><p>Lihat produk, harga, dan stok</p></div><button class="btn dark" id="reloadProducts">Muat Ulang</button></div>
+      <div class="toolbar"><input class="input" id="productSearch" placeholder="Cari produk..."><select class="select" id="productFilter"><option value="">Semua status</option><option value="aktif">Aktif</option><option value="nonaktif">Nonaktif</option></select></div>
+      <div class="table-wrap"><table><thead><tr><th>Nama</th><th>Kategori</th><th>Harga</th><th>Stok</th><th>Status</th></tr></thead><tbody id="productsBody"></tbody></table></div></div>
+    </section>
 
-      <div class="card">
-        <h2>Pesanan</h2>
-        <p>Kelola pesanan pelanggan.</p>
-        <a href="/pesanan.html">Lihat Pesanan</a>
-      </div>
+    <section class="page" id="page-pesanan">
+      <div class="card"><div class="section-head"><div><h2>Kelola Pesanan</h2><p>Ubah status pesanan pelanggan</p></div><button class="btn dark" id="reloadOrders">Muat Ulang</button></div>
+      <div class="toolbar"><input class="input" id="orderSearch" placeholder="Cari kode atau pelanggan..."><select class="select" id="orderFilter"><option value="">Semua status</option><option value="baru">Baru</option><option value="diproses">Diproses</option><option value="dikirim">Dikirim</option><option value="selesai">Selesai</option><option value="dibatalkan">Dibatalkan</option></select></div>
+      <div class="table-wrap"><table><thead><tr><th>Kode</th><th>Pelanggan</th><th>Total</th><th>Pembayaran</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="ordersBody"></tbody></table></div></div>
+    </section>
 
-      <div class="card">
-        <h2>Riwayat</h2>
-        <p>Lihat transaksi yang sudah diproses.</p>
-        <a href="/riwayat.html">Lihat Riwayat</a>
+    <section class="page" id="page-stok">
+      <div class="card"><div class="section-head"><div><h2>Penyesuaian Stok</h2><p>Tambah atau kurangi stok produk</p></div></div>
+      <div class="toolbar"><input class="input" id="stockSearch" placeholder="Cari produk..."></div>
+      <div class="table-wrap"><table><thead><tr><th>Produk</th><th>Stok Sekarang</th><th>Kondisi</th><th>Aksi</th></tr></thead><tbody id="stockBody"></tbody></table></div></div>
+    </section>
+
+    <section class="page" id="page-riwayat">
+      <div class="card"><div class="section-head"><div><h2>Riwayat Stok</h2><p>Perubahan stok terbaru</p></div><button class="btn dark" id="reloadHistory">Muat Ulang</button></div>
+      <div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Produk</th><th>Tipe</th><th>Jumlah</th><th>Sebelum</th><th>Sesudah</th><th>Keterangan</th></tr></thead><tbody id="historyBody"></tbody></table></div></div>
+    </section>
+
+    <section class="page" id="page-profil">
+      <div class="grid profile">
+        <div class="card"><div class="section-head"><div><h2>Profil Karyawan</h2><p>Perbarui informasi akun</p></div></div>
+          <div class="form-group"><label>Nama Lengkap</label><input class="form-control" id="profileName"></div>
+          <div class="form-group"><label>Email</label><input class="form-control" id="profileEmail" disabled></div>
+          <div class="form-group"><label>Nomor WhatsApp</label><input class="form-control" id="profileWa"></div>
+          <div class="form-group"><label>Role</label><input class="form-control" id="profileRole" disabled></div>
+          <button class="btn gold" id="saveProfile">Simpan Profil</button>
+        </div>
+        <div class="card"><div class="section-head"><div><h2>Ubah Password</h2><p>Minimal 8 karakter</p></div></div>
+          <div class="form-group"><label>Password Baru</label><input type="password" class="form-control" id="newPass"></div>
+          <div class="form-group"><label>Ulangi Password</label><input type="password" class="form-control" id="confirmPass"></div>
+          <button class="btn gold" id="changePass">Perbarui Password</button>
+        </div>
       </div>
     </section>
-  </main>
+  </div>
+</main>
 
-  <script type="module">
-    import { createClient } from
-      "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+<div class="modal-bg" id="stockModal">
+  <div class="modal"><h3 style="margin-top:0">Ubah Stok</h3>
+    <div class="form-group"><label>Produk</label><input class="form-control" id="stockName" disabled></div>
+    <div class="form-group"><label>Tipe</label><select class="form-control" id="stockType"><option value="stok_masuk">Stok Masuk</option><option value="stok_keluar">Stok Keluar</option><option value="koreksi">Koreksi Stok</option><option value="retur">Retur</option></select></div>
+    <div class="form-group"><label>Jumlah</label><input type="number" min="1" value="1" class="form-control" id="stockAmount"></div>
+    <div class="form-group"><label>Keterangan</label><textarea class="form-control" rows="3" id="stockNote"></textarea></div>
+    <div class="modal-actions"><button class="btn dark" id="closeModal">Batal</button><button class="btn gold" id="saveStock">Simpan</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
 
-    const SUPABASE_URL =
-      "https://glpgqvxicoskabwvashd.supabase.co";
-
-    const SUPABASE_ANON_KEY =
-      "sb_publishable_SGrBZoI_E0DKxRnIjwPALg_08oWGA5U";
-
-    const supabase = createClient(
-      SUPABASE_URL,
-      SUPABASE_ANON_KEY
-    );
-
-    async function cekAkses() {
-      const {
-        data: { session },
-        error: sessionError
-      } = await supabase.auth.getSession();
-
-      if (sessionError || !session) {
-        window.location.replace("/karyawan.html");
-        return;
-      }
-
-      const { data: profil, error: profilError } =
-        await supabase
-          .from("karyawan")
-          .select("nama_lengkap, role, status")
-          .eq("auth_user_id", session.user.id)
-          .maybeSingle();
-
-      if (profilError || !profil) {
-        await supabase.auth.signOut();
-        window.location.replace("/karyawan.html");
-        return;
-      }
-
-      if (profil.status !== "aktif") {
-        await supabase.auth.signOut();
-        alert("Akun sedang dinonaktifkan.");
-        window.location.replace("/karyawan.html");
-        return;
-      }
-
-      if (profil.role === "admin") {
-        window.location.replace("/admin/");
-        return;
-      }
-
-      document.getElementById("namaKaryawan").textContent =
-        profil.nama_lengkap;
-
-      document.getElementById("roleKaryawan").textContent =
-        profil.role;
-    }
-
-    document
-      .getElementById("logoutBtn")
-      .addEventListener("click", async () => {
-        await supabase.auth.signOut();
-        window.location.replace("/karyawan.html");
-      });
-
-    cekAkses();
-  </script>
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8/+esm";
+const supabase=createClient("https://glpgqvxicoskabwvashd.supabase.co","sb_publishable_SGrBZoI_E0DKxRnIjwPALg_08oWGA5U");
+const $=id=>document.getElementById(id), rupiah=new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0});
+let profile=null,products=[],orders=[],selected=null;
+function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2800)}
+function badge(s){const x=(s||"-").toLowerCase(),c=["aktif","selesai","sudah_bayar","aman"].includes(x)?"green":["baru","diproses","dikirim","belum_bayar","hampir habis"].includes(x)?"yellow":["dibatalkan","nonaktif"].includes(x)?"red":"gray";return `<span class="badge ${c}">${s||"-"}</span>`}
+function rowEmpty(c,t){return `<tr><td colspan="${c}" style="text-align:center;color:#888;padding:28px">${t}</td></tr>`}
+function page(name){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));$(`page-${name}`).classList.add("active");document.querySelector(`[data-page="${name}"]`).classList.add("active");const m={dashboard:["Dashboard","Ringkasan operasional BBM Parfume"],produk:["Produk","Daftar produk dan stok"],pesanan:["Pesanan","Kelola pesanan pelanggan"],stok:["Stok","Penyesuaian persediaan"],riwayat:["Riwayat","Aktivitas perubahan stok"],profil:["Profil","Informasi akun karyawan"]}[name];$("heading").textContent=m[0];$("subtitle").textContent=m[1];$("sidebar").classList.remove("open")}
+async function auth(){const {data:{session}}=await supabase.auth.getSession();if(!session){location.replace("/karyawan.html");return false}const {data,error}=await supabase.from("karyawan").select("*").eq("auth_user_id",session.user.id).maybeSingle();if(error||!data){await supabase.auth.signOut();location.replace("/karyawan.html");return false}if(data.status!=="aktif"){await supabase.auth.signOut();alert("Akun sedang nonaktif");location.replace("/karyawan.html");return false}if(data.role==="admin"){location.replace("/admin/");return false}profile=data;$("sideName").textContent=data.nama_lengkap||"Karyawan";$("sideEmail").textContent=data.email||session.user.email;$("profileName").value=data.nama_lengkap||"";$("profileEmail").value=data.email||session.user.email;$("profileWa").value=data.no_whatsapp||"";$("profileRole").value=data.role||"karyawan";$("gate").style.display="none";return true}
+async function loadProducts(){const {data,error}=await supabase.from("products").select("*").order("id",{ascending:false});if(error){$("productsBody").innerHTML=rowEmpty(5,error.message);return}products=data||[];renderProducts();renderStock();dashboard()}
+function renderProducts(){const q=$("productSearch").value.toLowerCase(),f=$("productFilter").value,r=products.filter(p=>(p.nama_produk||"").toLowerCase().includes(q)&&(!f||p.status===f));$("productsBody").innerHTML=r.length?r.map(p=>`<tr><td><strong>${p.nama_produk||"-"}</strong></td><td>${p.kategori||"-"}</td><td>${rupiah.format(Number(p.harga||0))}</td><td>${Number(p.stok||0)}</td><td>${badge(p.status)}</td></tr>`).join(""):rowEmpty(5,"Produk tidak ditemukan")}
+function renderStock(){const q=$("stockSearch").value.toLowerCase(),r=products.filter(p=>(p.nama_produk||"").toLowerCase().includes(q));$("stockBody").innerHTML=r.length?r.map(p=>`<tr><td>${p.nama_produk||"-"}</td><td><strong>${Number(p.stok||0)}</strong></td><td>${badge(Number(p.stok||0)<=10?"Hampir Habis":"Aman")}</td><td><button class="btn gold sm edit-stock" data-id="${p.id}">Ubah Stok</button></td></tr>`).join(""):rowEmpty(4,"Produk tidak ditemukan");document.querySelectorAll(".edit-stock").forEach(b=>b.onclick=()=>openStock(Number(b.dataset.id)))}
+async function loadOrders(){const {data,error}=await supabase.from("orders").select("*").order("created_at",{ascending:false});if(error){$("ordersBody").innerHTML=rowEmpty(6,error.message);return}orders=data||[];renderOrders();dashboard()}
+function renderOrders(){const q=$("orderSearch").value.toLowerCase(),f=$("orderFilter").value,r=orders.filter(o=>`${o.kode_pesanan||""} ${o.nama_pelanggan||""}`.toLowerCase().includes(q)&&(!f||o.status_pesanan===f));$("ordersBody").innerHTML=r.length?r.map(o=>`<tr><td><strong>${o.kode_pesanan||"#"+o.id}</strong></td><td>${o.nama_pelanggan||"-"}</td><td>${rupiah.format(Number(o.total||0))}</td><td>${badge(o.status_pembayaran)}</td><td>${badge(o.status_pesanan)}</td><td><select class="select status-order" data-id="${o.id}"><option value="baru" ${o.status_pesanan==="baru"?"selected":""}>Baru</option><option value="diproses" ${o.status_pesanan==="diproses"?"selected":""}>Diproses</option><option value="dikirim" ${o.status_pesanan==="dikirim"?"selected":""}>Dikirim</option><option value="selesai" ${o.status_pesanan==="selesai"?"selected":""}>Selesai</option><option value="dibatalkan" ${o.status_pesanan==="dibatalkan"?"selected":""}>Dibatalkan</option></select></td></tr>`).join(""):rowEmpty(6,"Pesanan tidak ditemukan");document.querySelectorAll(".status-order").forEach(s=>s.onchange=()=>updateOrder(Number(s.dataset.id),s.value))}
+async function updateOrder(id,status){const {error}=await supabase.from("orders").update({status_pesanan:status,processed_by:profile.id,updated_at:new Date().toISOString()}).eq("id",id);if(error){toast(error.message);return}toast("Status pesanan diperbarui");loadOrders()}
+async function loadHistory(){const {data,error}=await supabase.from("stock_history").select("*,products(nama_produk)").order("created_at",{ascending:false}).limit(100);if(error){$("historyBody").innerHTML=rowEmpty(7,error.message);return}$("historyBody").innerHTML=(data||[]).length?data.map(h=>`<tr><td>${new Date(h.created_at).toLocaleString("id-ID")}</td><td>${h.products?.nama_produk||"-"}</td><td>${badge(h.tipe)}</td><td>${h.jumlah||0}</td><td>${h.stok_sebelum||0}</td><td>${h.stok_sesudah||0}</td><td>${h.keterangan||"-"}</td></tr>`).join(""):rowEmpty(7,"Belum ada riwayat")}
+function dashboard(){$("sProducts").textContent=products.length;$("sStock").textContent=products.reduce((a,p)=>a+Number(p.stok||0),0).toLocaleString("id-ID");$("sNew").textContent=orders.filter(o=>o.status_pesanan==="baru").length;$("sDone").textContent=orders.filter(o=>o.status_pesanan==="selesai").length;$("latestOrders").innerHTML=orders.slice(0,5).length?orders.slice(0,5).map(o=>`<tr><td>${o.kode_pesanan||"#"+o.id}</td><td>${o.nama_pelanggan||"-"}</td><td>${rupiah.format(Number(o.total||0))}</td><td>${badge(o.status_pesanan)}</td></tr>`).join(""):rowEmpty(4,"Belum ada pesanan");const low=products.filter(p=>Number(p.stok||0)<=10).slice(0,8);$("lowStock").innerHTML=low.length?low.map(p=>`<div class="low-item"><span>${p.nama_produk}</span><strong>${p.stok} unit</strong></div>`).join(""):`<div style="color:#888">Semua stok aman</div>`}
+function openStock(id){selected=products.find(p=>Number(p.id)===id);if(!selected)return;$("stockName").value=selected.nama_produk;$("stockType").value="stok_masuk";$("stockAmount").value=1;$("stockNote").value="";$("stockModal").classList.add("show")}
+async function saveStock(){const amount=Math.max(1,Number($("stockAmount").value||1)),type=$("stockType").value,before=Number(selected.stok||0);let after=before;if(["stok_masuk","retur"].includes(type))after=before+amount;if(type==="stok_keluar")after=before-amount;if(type==="koreksi")after=amount;if(after<0){toast("Stok tidak boleh minus");return}const {error}=await supabase.from("products").update({stok:after,updated_by:profile.id,updated_at:new Date().toISOString()}).eq("id",selected.id);if(error){toast(error.message);return}await supabase.from("stock_history").insert({product_id:selected.id,user_id:profile.id,tipe:type,jumlah:amount,stok_sebelum:before,stok_sesudah:after,keterangan:$("stockNote").value||null});$("stockModal").classList.remove("show");toast("Stok diperbarui");loadProducts();loadHistory()}
+document.querySelectorAll("[data-page]").forEach(b=>b.onclick=()=>page(b.dataset.page));$("menuBtn").onclick=()=>$("sidebar").classList.toggle("open");$("logout").onclick=async()=>{await supabase.auth.signOut();location.replace("/karyawan.html")};$("productSearch").oninput=renderProducts;$("productFilter").onchange=renderProducts;$("orderSearch").oninput=renderOrders;$("orderFilter").onchange=renderOrders;$("stockSearch").oninput=renderStock;$("reloadProducts").onclick=loadProducts;$("reloadOrders").onclick=loadOrders;$("reloadHistory").onclick=loadHistory;$("closeModal").onclick=()=>$("stockModal").classList.remove("show");$("saveStock").onclick=saveStock;$("saveProfile").onclick=async()=>{const {error}=await supabase.from("karyawan").update({nama_lengkap:$("profileName").value,no_whatsapp:$("profileWa").value,updated_at:new Date().toISOString()}).eq("id",profile.id);toast(error?error.message:"Profil disimpan")};$("changePass").onclick=async()=>{const p=$("newPass").value,c=$("confirmPass").value;if(p.length<8)return toast("Password minimal 8 karakter");if(p!==c)return toast("Konfirmasi password tidak sama");const {error}=await supabase.auth.updateUser({password:p});toast(error?error.message:"Password diperbarui")};$("today").textContent=new Date().toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+if(await auth())await Promise.all([loadProducts(),loadOrders(),loadHistory()]);
+</script>
 </body>
 </html>
