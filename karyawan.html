@@ -13,8 +13,8 @@
     }
     *{box-sizing:border-box}
     body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
-    .snowfall{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-    .snowflake{position:absolute;top:-24px;color:#fff;opacity:.75;filter:drop-shadow(0 0 4px rgba(255,255,255,.55));animation:snowFall linear infinite,snowSway ease-in-out infinite}
+    .snowfall{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:35}
+    .snowflake{position:absolute;top:-24px;color:#fff;font-weight:700;opacity:.9;text-shadow:0 0 6px #fff,0 0 12px rgba(255,255,255,.65);animation:snowFall linear infinite,snowSway ease-in-out infinite}
     @keyframes snowFall{to{transform:translateY(110vh) rotate(360deg)}}
     @keyframes snowSway{0%,100%{margin-left:0}50%{margin-left:35px}}
     button,input,select,textarea{font:inherit}
@@ -218,7 +218,7 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const supabase=createClient("https://glpgqvxicoskabwvashd.supabase.co","sb_publishable_SGrBZoI_E0DKxRnIjwPALg_08oWGA5U");
 const $=id=>document.getElementById(id), rupiah=new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0});
 let admin=null,products=[],orders=[],customers=[],employees=[],editingProduct=null,editingEmployee=null;
-function createSnow(){const layer=$("snowfall"),amount=window.innerWidth<700?35:70;for(let i=0;i<amount;i++){const flake=document.createElement("span");flake.className="snowflake";flake.textContent=Math.random()>.72?"❄":"•";flake.style.left=`${Math.random()*100}%`;flake.style.fontSize=`${6+Math.random()*12}px`;flake.style.animationDuration=`${7+Math.random()*12}s,${2.5+Math.random()*4}s`;flake.style.animationDelay=`-${Math.random()*18}s,-${Math.random()*5}s`;flake.style.opacity=.25+Math.random()*.65;layer.appendChild(flake)}}
+function createSnow(){const layer=$("snowfall"),amount=window.innerWidth<700?45:95;for(let i=0;i<amount;i++){const flake=document.createElement("span");flake.className="snowflake";flake.textContent=Math.random()>.62?"❄":"●";flake.style.left=`${Math.random()*100}%`;flake.style.fontSize=`${7+Math.random()*14}px`;flake.style.animationDuration=`${6+Math.random()*11}s,${2.5+Math.random()*4}s`;flake.style.animationDelay=`-${Math.random()*17}s,-${Math.random()*5}s`;flake.style.opacity=.4+Math.random()*.6;layer.appendChild(flake)}}
 createSnow();
 
 function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2800)}
