@@ -3,208 +3,261 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Karyawan - BBM Parfume</title>
+  <title>Admin BBM Parfume</title>
   <link rel="icon" href="https://i.ibb.co/0RSmbB11/image.png" type="image/png">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: #080808;
-      color: #e0e0e0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+    :root{
+      --bg:#080808;--panel:#121212;--panel2:#181818;--line:#2b2b2b;
+      --gold:#f5c542;--gold2:#d7a923;--text:#f5f5f5;--muted:#969696;
+      --danger:#ff7777;--ok:#63d896;--sidebar:255px;
     }
-    .login-container {
-      background: #131313;
-      border: 1px solid #2a2a2a;
-      border-radius: 20px;
-      padding: 40px 36px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.6);
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    .gate{position:fixed;inset:0;background:#080808;display:grid;place-items:center;z-index:500}
+    .spinner{width:28px;height:28px;border:3px solid #333;border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .sidebar{
+      position:fixed;inset:0 auto 0 0;width:var(--sidebar);background:#0d0d0d;
+      border-right:1px solid var(--line);padding:20px 15px;display:flex;flex-direction:column;z-index:40
     }
-    .logo { text-align: center; margin-bottom: 28px; }
-    .logo img {
-      width: 70px; height: 70px; border-radius: 50%;
-      object-fit: contain;
-    }
-    .logo h1 { color: #f5c542; font-size: 1.5rem; margin-top: 10px; }
-    .logo p { color: #888; font-size: .85rem; }
-    .form-group { margin-bottom: 18px; }
-    label {
-      display: block; font-size: .85rem; color: #aaa;
-      margin-bottom: 6px; font-weight: 600;
-    }
-    input {
-      width: 100%; padding: 12px 16px; background: #1a1a1a;
-      border: 1px solid #2a2a2a; border-radius: 10px;
-      color: white; font-size: 1rem;
-    }
-    input:focus {
-      outline: none; border-color: #f5c542;
-      box-shadow: 0 0 0 3px rgba(245,197,66,.15);
-    }
-    button {
-      width: 100%; padding: 14px;
-      background: linear-gradient(135deg,#f5c542,#d4a020);
-      border: 0; border-radius: 10px; color: #111;
-      font-size: 1rem; font-weight: 700; cursor: pointer;
-    }
-    button:disabled { opacity: .65; cursor: wait; }
-    .message {
-      display: none; margin-top: 12px; text-align: center;
-      font-size: .86rem; line-height: 1.4;
-    }
-    .message.show { display: block; }
-    .message.error { color: #ff6b6b; }
-    .message.info { color: #f5c542; }
-    .back-link { text-align: center; margin-top: 16px; }
-    .back-link a { color: #888; text-decoration: none; font-size: .85rem; }
-    .back-link a:hover { color: #f5c542; }
+    .brand{display:flex;gap:12px;align-items:center;padding:0 8px 22px}
+    .brand img{width:46px;height:46px;border-radius:50%}
+    .brand strong{color:var(--gold)}
+    .brand small{display:block;color:var(--muted);margin-top:3px}
+    .nav{display:grid;gap:7px}
+    .nav button{border:0;background:transparent;color:#ccc;text-align:left;padding:12px;border-radius:10px;font-weight:700}
+    .nav button.active,.nav button:hover{background:#211d11;color:var(--gold)}
+    .side-user{margin-top:auto;border-top:1px solid var(--line);padding-top:14px}
+    .side-user small{display:block;color:var(--muted);margin-top:4px}
+    .logout{width:100%;margin-top:12px;padding:11px;border-radius:9px;border:1px solid #552525;background:#251111;color:#ff9292;font-weight:700}
+    .main{margin-left:var(--sidebar);min-height:100vh}
+    .topbar{position:sticky;top:0;z-index:30;background:rgba(8,8,8,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
+    .topbar h1{margin:0;font-size:20px}.topbar p{margin:4px 0 0;color:var(--muted);font-size:12px}
+    .content{padding:24px}
+    .page{display:none}.page.active{display:block}
+    .grid{display:grid;gap:16px}.stats{grid-template-columns:repeat(5,1fr);margin-bottom:18px}
+    .card{background:linear-gradient(180deg,#151515,#101010);border:1px solid var(--line);border-radius:15px;padding:18px}
+    .stat-label{font-size:12px;color:var(--muted)}.stat-value{font-size:28px;font-weight:800;margin-top:12px}
+    .section-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}
+    .section-head h2{font-size:16px;margin:0}.section-head p{font-size:11px;color:var(--muted);margin:3px 0 0}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+    .input,.select,.control{background:#101010;border:1px solid var(--line);color:#fff;border-radius:9px;padding:10px 12px;outline:none}
+    .input{min-width:260px}.input:focus,.select:focus,.control:focus{border-color:var(--gold)}
+    .btn{border:0;border-radius:9px;padding:9px 12px;font-weight:700}
+    .btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111}
+    .btn.dark{background:#232323;color:#eee;border:1px solid #333}
+    .btn.red{background:#3d1717;color:#ff9a9a;border:1px solid #642525}
+    .btn.sm{padding:7px 9px;font-size:12px}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}
+    table{width:100%;border-collapse:collapse;min-width:850px}
+    th,td{padding:12px;border-bottom:1px solid #252525;text-align:left;font-size:12px}
+    th{font-size:11px;color:#aaa;background:#111;text-transform:uppercase}
+    .badge{padding:5px 8px;border-radius:999px;font-size:10px;font-weight:700;display:inline-block}
+    .green{background:#143822;color:#75e3a4}.yellow{background:#3b2f12;color:#ffd267}.red{background:#3d1717;color:#ff9696}.gray{background:#292929;color:#ccc}
+    .two{grid-template-columns:1.5fr 1fr}.low-list{display:grid;gap:9px}.low-item{display:flex;justify-content:space-between;padding:11px;border:1px solid #282828;border-radius:10px}
+    .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:100}
+    .modal-bg.show{display:flex}.modal{width:min(620px,100%);max-height:90vh;overflow:auto;background:#141414;border:1px solid #333;border-radius:15px;padding:20px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.form-group{display:grid;gap:6px;margin-bottom:12px}.form-group label{font-size:11px;color:var(--muted)}
+    .modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}
+    .toast{position:fixed;right:20px;bottom:20px;background:#171717;border:1px solid #333;border-radius:10px;padding:12px 14px;display:none;z-index:110;font-size:12px}
+    .toast.show{display:block}.menu{display:none}
+    @media(max-width:1150px){.stats{grid-template-columns:repeat(3,1fr)}.two{grid-template-columns:1fr}}
+    @media(max-width:780px){.sidebar{transform:translateX(-100%);transition:.25s}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.menu{display:block}.content{padding:16px}.stats{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}}
+    @media(max-width:460px){.stats{grid-template-columns:1fr}.input{min-width:100%;width:100%}}
   </style>
 </head>
 <body>
-  <div class="login-container">
-    <div class="logo">
-      <img src="https://i.ibb.co/0RSmbB11/image.png" alt="BBM">
-      <h1>BBM PARFUME</h1>
-      <p>Login Karyawan</p>
-    </div>
+<div class="gate" id="gate"><div style="text-align:center;color:#aaa"><div class="spinner"></div>Memeriksa akses admin...</div></div>
 
-    <form id="loginForm" autocomplete="on">
-      <div class="form-group">
-        <label for="email">✉ Email</label>
-        <input type="email" id="email" name="email"
-               placeholder="masukkan email" autocomplete="username" required>
-      </div>
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><img src="https://i.ibb.co/0RSmbB11/image.png"><div><strong>BBM PARFUME</strong><small>Panel Admin</small></div></div>
+  <div class="nav">
+    <button class="active" data-page="dashboard">🏠 Dashboard</button>
+    <button data-page="produk">📦 Produk</button>
+    <button data-page="pesanan">🛒 Pesanan</button>
+    <button data-page="pelanggan">👥 Pelanggan</button>
+    <button data-page="karyawan">👨‍💼 Karyawan</button>
+    <button data-page="stok">📊 Riwayat Stok</button>
+    <button data-page="laporan">📈 Laporan</button>
+    <button data-page="pengaturan">⚙️ Pengaturan</button>
+  </div>
+  <div class="side-user"><strong id="adminName">Administrator</strong><small id="adminEmail">-</small><button class="logout" id="logout">Keluar</button></div>
+</aside>
 
-      <div class="form-group">
-        <label for="password">🔒 Password</label>
-        <input type="password" id="password" name="password"
-               placeholder="masukkan password" autocomplete="current-password" required>
-      </div>
-
-      <button type="submit" id="loginBtn">
-        <span id="loginText">↪ Login</span>
-      </button>
-
-      <div id="message" class="message"></div>
-    </form>
-
-    <div class="back-link">
-      <a href="/">← Kembali ke Website</a>
-    </div>
+<main class="main">
+  <div class="topbar">
+    <div style="display:flex;gap:12px;align-items:center"><button class="btn dark menu" id="menuBtn">☰</button><div><h1 id="heading">Dashboard</h1><p id="subtitle">Ringkasan operasional BBM Parfume</p></div></div>
+    <div id="today" style="font-size:12px;color:#aaa"></div>
   </div>
 
-  <script type="module">
-    import { createClient } from
-      "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8/+esm";
+  <div class="content">
+    <section class="page active" id="page-dashboard">
+      <div class="grid stats">
+        <div class="card"><div class="stat-label">Total Produk</div><div class="stat-value" id="sProducts">0</div></div>
+        <div class="card"><div class="stat-label">Total Stok</div><div class="stat-value" id="sStock">0</div></div>
+        <div class="card"><div class="stat-label">Pesanan Baru</div><div class="stat-value" id="sNew">0</div></div>
+        <div class="card"><div class="stat-label">Karyawan Aktif</div><div class="stat-value" id="sEmployees">0</div></div>
+        <div class="card"><div class="stat-label">Omzet Selesai</div><div class="stat-value" id="sRevenue" style="font-size:20px">Rp0</div></div>
+      </div>
+      <div class="grid two">
+        <div class="card"><div class="section-head"><div><h2>Pesanan Terbaru</h2><p>Pesanan terbaru dari pelanggan</p></div></div><div class="table-wrap"><table><thead><tr><th>Kode</th><th>Pelanggan</th><th>Total</th><th>Status</th></tr></thead><tbody id="latestOrders"></tbody></table></div></div>
+        <div class="card"><div class="section-head"><div><h2>Stok Hampir Habis</h2><p>Produk dengan stok 10 atau kurang</p></div></div><div class="low-list" id="lowStock"></div></div>
+      </div>
+    </section>
 
-    const SUPABASE_URL = "https://glpgqvxicoskabwvashd.supabase.co";
-    const SUPABASE_ANON_KEY =
-      "sb_publishable_SGrBZoI_E0DKxRnIjwPALg_08oWGA5U";
+    <section class="page" id="page-produk">
+      <div class="card">
+        <div class="section-head"><div><h2>Kelola Produk</h2><p>Tambah, edit, aktifkan, atau hapus produk</p></div><button class="btn gold" id="addProduct">+ Tambah Produk</button></div>
+        <div class="toolbar"><input class="input" id="productSearch" placeholder="Cari produk..."><select class="select" id="productFilter"><option value="">Semua status</option><option value="aktif">Aktif</option><option value="nonaktif">Nonaktif</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Nama</th><th>Kategori</th><th>Harga</th><th>Stok</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="productsBody"></tbody></table></div>
+      </div>
+    </section>
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true
-      }
-    });
+    <section class="page" id="page-pesanan">
+      <div class="card">
+        <div class="section-head"><div><h2>Kelola Pesanan</h2><p>Perbarui status pesanan dan pembayaran</p></div><button class="btn dark" id="reloadOrders">Muat Ulang</button></div>
+        <div class="toolbar"><input class="input" id="orderSearch" placeholder="Cari kode atau pelanggan..."><select class="select" id="orderFilter"><option value="">Semua status</option><option value="baru">Baru</option><option value="diproses">Diproses</option><option value="dikirim">Dikirim</option><option value="selesai">Selesai</option><option value="dibatalkan">Dibatalkan</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Kode</th><th>Pelanggan</th><th>Total</th><th>Pembayaran</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="ordersBody"></tbody></table></div>
+      </div>
+    </section>
 
-    const form = document.getElementById("loginForm");
-    const loginBtn = document.getElementById("loginBtn");
-    const loginText = document.getElementById("loginText");
-    const message = document.getElementById("message");
+    <section class="page" id="page-pelanggan">
+      <div class="card">
+        <div class="section-head"><div><h2>Data Pelanggan</h2><p>Daftar pelanggan yang tersimpan</p></div><button class="btn dark" id="reloadCustomers">Muat Ulang</button></div>
+        <div class="toolbar"><input class="input" id="customerSearch" placeholder="Cari nama atau WhatsApp..."></div>
+        <div class="table-wrap"><table><thead><tr><th>Nama</th><th>WhatsApp</th><th>Alamat</th><th>Dibuat</th></tr></thead><tbody id="customersBody"></tbody></table></div>
+      </div>
+    </section>
 
-    function showMessage(text, type = "error") {
-      message.textContent = text;
-      message.className = `message show ${type}`;
-    }
+    <section class="page" id="page-karyawan">
+      <div class="card">
+        <div class="section-head"><div><h2>Kelola Karyawan</h2><p>Kelola profil, role, dan status akun</p></div><button class="btn gold" id="addEmployee">+ Tambah Profil</button></div>
+        <div class="toolbar"><input class="input" id="employeeSearch" placeholder="Cari nama, username, atau email..."></div>
+        <div class="table-wrap"><table><thead><tr><th>Nama</th><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="employeesBody"></tbody></table></div>
+      </div>
+    </section>
 
-    function clearMessage() {
-      message.textContent = "";
-      message.className = "message";
-    }
+    <section class="page" id="page-stok">
+      <div class="card">
+        <div class="section-head"><div><h2>Riwayat Stok</h2><p>Semua perubahan persediaan</p></div><button class="btn dark" id="reloadHistory">Muat Ulang</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Produk</th><th>Karyawan</th><th>Tipe</th><th>Jumlah</th><th>Sebelum</th><th>Sesudah</th><th>Keterangan</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+      </div>
+    </section>
 
-    function setLoading(isLoading) {
-      loginBtn.disabled = isLoading;
-      loginText.textContent = isLoading ? "Memproses..." : "↪ Login";
-    }
+    <section class="page" id="page-laporan">
+      <div class="grid stats">
+        <div class="card"><div class="stat-label">Total Pesanan</div><div class="stat-value" id="rOrders">0</div></div>
+        <div class="card"><div class="stat-label">Pesanan Selesai</div><div class="stat-value" id="rDone">0</div></div>
+        <div class="card"><div class="stat-label">Pesanan Dibatalkan</div><div class="stat-value" id="rCancelled">0</div></div>
+        <div class="card"><div class="stat-label">Omzet Selesai</div><div class="stat-value" id="rRevenue" style="font-size:20px">Rp0</div></div>
+        <div class="card"><div class="stat-label">Nilai Rata-rata</div><div class="stat-value" id="rAverage" style="font-size:20px">Rp0</div></div>
+      </div>
+      <div class="card"><div class="section-head"><div><h2>Ringkasan Status Pesanan</h2><p>Jumlah pesanan berdasarkan status</p></div></div><div id="reportStatus" class="low-list"></div></div>
+    </section>
 
-    function timeout(ms = 15000) {
-      return new Promise((_, reject) =>
-        setTimeout(() => reject(
-          new Error("Koneksi terlalu lama. Coba matikan VPN/adblock lalu ulangi.")
-        ), ms)
-      );
-    }
+    <section class="page" id="page-pengaturan">
+      <div class="grid two">
+        <div class="card"><div class="section-head"><div><h2>Profil Admin</h2><p>Perbarui informasi admin</p></div></div>
+          <div class="form-group"><label>Nama Lengkap</label><input class="control" id="profileName"></div>
+          <div class="form-group"><label>Email</label><input class="control" id="profileEmail" disabled></div>
+          <div class="form-group"><label>Nomor WhatsApp</label><input class="control" id="profileWa"></div>
+          <button class="btn gold" id="saveProfile">Simpan Profil</button>
+        </div>
+        <div class="card"><div class="section-head"><div><h2>Ubah Password</h2><p>Gunakan minimal 8 karakter</p></div></div>
+          <div class="form-group"><label>Password Baru</label><input type="password" class="control" id="newPass"></div>
+          <div class="form-group"><label>Ulangi Password</label><input type="password" class="control" id="confirmPass"></div>
+          <button class="btn gold" id="changePass">Perbarui Password</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
 
-    async function login(email, password) {
-      const result = await Promise.race([
-        supabase.auth.signInWithPassword({ email, password }),
-        timeout()
-      ]);
+<div class="modal-bg" id="productModal">
+  <div class="modal"><h3 id="productModalTitle">Tambah Produk</h3>
+    <div class="form-grid">
+      <div class="form-group"><label>Nama Produk</label><input class="control" id="pName"></div>
+      <div class="form-group"><label>Kategori</label><input class="control" id="pCategory"></div>
+      <div class="form-group"><label>Harga</label><input type="number" min="0" class="control" id="pPrice"></div>
+      <div class="form-group"><label>Stok</label><input type="number" min="0" class="control" id="pStock"></div>
+      <div class="form-group"><label>Status</label><select class="control" id="pStatus"><option value="aktif">Aktif</option><option value="nonaktif">Nonaktif</option></select></div>
+      <div class="form-group"><label>URL Gambar</label><input class="control" id="pImage"></div>
+    </div>
+    <div class="form-group"><label>Deskripsi</label><textarea class="control" rows="3" id="pDescription"></textarea></div>
+    <div class="modal-actions"><button class="btn dark" data-close="productModal">Batal</button><button class="btn gold" id="saveProduct">Simpan</button></div>
+  </div>
+</div>
 
-      if (result.error) throw result.error;
-      if (!result.data?.user) throw new Error("Data pengguna tidak ditemukan.");
+<div class="modal-bg" id="employeeModal">
+  <div class="modal"><h3 id="employeeModalTitle">Tambah Profil Karyawan</h3>
+    <p style="color:#aaa;font-size:12px">Buat akun terlebih dahulu melalui Supabase Authentication, lalu masukkan UID akun tersebut di sini.</p>
+    <div class="form-grid">
+      <div class="form-group"><label>Auth User UID</label><input class="control" id="eUid"></div>
+      <div class="form-group"><label>Nama Lengkap</label><input class="control" id="eName"></div>
+      <div class="form-group"><label>Username</label><input class="control" id="eUsername"></div>
+      <div class="form-group"><label>Email</label><input class="control" id="eEmail"></div>
+      <div class="form-group"><label>Role</label><select class="control" id="eRole"><option value="karyawan">Karyawan</option><option value="kasir">Kasir</option><option value="gudang">Gudang</option><option value="admin">Admin</option></select></div>
+      <div class="form-group"><label>Status</label><select class="control" id="eStatus"><option value="aktif">Aktif</option><option value="nonaktif">Nonaktif</option></select></div>
+      <div class="form-group"><label>Nomor WhatsApp</label><input class="control" id="eWa"></div>
+    </div>
+    <div class="modal-actions"><button class="btn dark" data-close="employeeModal">Batal</button><button class="btn gold" id="saveEmployee">Simpan</button></div>
+  </div>
+</div>
 
-      const { data: profil, error: profilError } = await Promise.race([
-        supabase
-          .from("karyawan")
-          .select("nama_lengkap, role, status")
-          .eq("auth_user_id", result.data.user.id)
-          .maybeSingle(),
-        timeout()
-      ]);
+<div class="toast" id="toast"></div>
 
-      if (profilError) throw profilError;
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8/+esm";
+const supabase=createClient("https://glpgqvxicoskabwvashd.supabase.co","sb_publishable_SGrBZoI_E0DKxRnIjwPALg_08oWGA5U");
+const $=id=>document.getElementById(id), rupiah=new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0});
+let admin=null,products=[],orders=[],customers=[],employees=[],editingProduct=null,editingEmployee=null;
 
-      if (!profil) {
-        await supabase.auth.signOut();
-        throw new Error("Akun Auth belum terhubung ke tabel karyawan.");
-      }
+function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2800)}
+function badge(s){const x=(s||"-").toLowerCase(),c=["aktif","selesai","sudah_bayar"].includes(x)?"green":["baru","diproses","dikirim","belum_bayar"].includes(x)?"yellow":["dibatalkan","nonaktif"].includes(x)?"red":"gray";return `<span class="badge ${c}">${s||"-"}</span>`}
+function empty(c,t){return `<tr><td colspan="${c}" style="text-align:center;color:#888;padding:28px">${t}</td></tr>`}
+function page(name){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));$(`page-${name}`).classList.add("active");document.querySelector(`[data-page="${name}"]`).classList.add("active");const m={dashboard:["Dashboard","Ringkasan operasional BBM Parfume"],produk:["Produk","Kelola katalog dan persediaan"],pesanan:["Pesanan","Kelola pesanan pelanggan"],pelanggan:["Pelanggan","Data pelanggan tersimpan"],karyawan:["Karyawan","Kelola akun dan hak akses"],stok:["Riwayat Stok","Aktivitas perubahan persediaan"],laporan:["Laporan","Ringkasan performa penjualan"],pengaturan:["Pengaturan","Profil dan keamanan admin"]}[name];$("heading").textContent=m[0];$("subtitle").textContent=m[1];$("sidebar").classList.remove("open")}
+async function auth(){const {data:{session}}=await supabase.auth.getSession();if(!session){location.replace("/karyawan.html");return false}const {data,error}=await supabase.from("karyawan").select("*").eq("auth_user_id",session.user.id).maybeSingle();if(error||!data||data.role!=="admin"||data.status!=="aktif"){await supabase.auth.signOut();location.replace("/karyawan.html");return false}admin=data;$("adminName").textContent=data.nama_lengkap||"Administrator";$("adminEmail").textContent=data.email||session.user.email;$("profileName").value=data.nama_lengkap||"";$("profileEmail").value=data.email||session.user.email;$("profileWa").value=data.no_whatsapp||"";$("gate").style.display="none";return true}
 
-      if (profil.status !== "aktif") {
-        await supabase.auth.signOut();
-        throw new Error("Akun sedang dinonaktifkan.");
-      }
+async function loadProducts(){const {data,error}=await supabase.from("products").select("*").order("id",{ascending:false});if(error){$("productsBody").innerHTML=empty(6,error.message);return}products=data||[];renderProducts();dashboard()}
+function renderProducts(){const q=$("productSearch").value.toLowerCase(),f=$("productFilter").value,r=products.filter(p=>(p.nama_produk||"").toLowerCase().includes(q)&&(!f||p.status===f));$("productsBody").innerHTML=r.length?r.map(p=>`<tr><td><strong>${p.nama_produk||"-"}</strong></td><td>${p.kategori||"-"}</td><td>${rupiah.format(Number(p.harga||0))}</td><td>${Number(p.stok||0)}</td><td>${badge(p.status)}</td><td><button class="btn dark sm edit-product" data-id="${p.id}">Edit</button> <button class="btn red sm delete-product" data-id="${p.id}">Hapus</button></td></tr>`).join(""):empty(6,"Produk tidak ditemukan");document.querySelectorAll(".edit-product").forEach(b=>b.onclick=()=>openProduct(Number(b.dataset.id)));document.querySelectorAll(".delete-product").forEach(b=>b.onclick=()=>deleteProduct(Number(b.dataset.id)))}
+function openProduct(id=null){editingProduct=id?products.find(p=>Number(p.id)===id):null;$("productModalTitle").textContent=editingProduct?"Edit Produk":"Tambah Produk";$("pName").value=editingProduct?.nama_produk||"";$("pCategory").value=editingProduct?.kategori||"";$("pPrice").value=editingProduct?.harga||0;$("pStock").value=editingProduct?.stok||0;$("pStatus").value=editingProduct?.status||"aktif";$("pImage").value=editingProduct?.gambar||"";$("pDescription").value=editingProduct?.deskripsi||"";$("productModal").classList.add("show")}
+async function saveProduct(){const payload={nama_produk:$("pName").value.trim(),kategori:$("pCategory").value.trim()||null,harga:Number($("pPrice").value||0),stok:Number($("pStock").value||0),status:$("pStatus").value,gambar:$("pImage").value.trim()||null,deskripsi:$("pDescription").value.trim()||null,updated_by:admin.id,updated_at:new Date().toISOString()};if(!payload.nama_produk)return toast("Nama produk wajib diisi");let res;if(editingProduct)res=await supabase.from("products").update(payload).eq("id",editingProduct.id);else res=await supabase.from("products").insert({...payload,created_by:admin.id});if(res.error)return toast(res.error.message);$("productModal").classList.remove("show");toast("Produk berhasil disimpan");loadProducts()}
+async function deleteProduct(id){if(!confirm("Hapus produk ini?"))return;const {error}=await supabase.from("products").delete().eq("id",id);if(error)return toast(error.message);toast("Produk berhasil dihapus");loadProducts()}
 
-      if (profil.role === "admin") {
-        window.location.replace("/admin/");
-      } else {
-        window.location.replace("/panel-karyawan.html");
-      }
-    }
+async function loadOrders(){const {data,error}=await supabase.from("orders").select("*").order("created_at",{ascending:false});if(error){$("ordersBody").innerHTML=empty(6,error.message);return}orders=data||[];renderOrders();dashboard();reports()}
+function renderOrders(){const q=$("orderSearch").value.toLowerCase(),f=$("orderFilter").value,r=orders.filter(o=>`${o.kode_pesanan||""} ${o.nama_pelanggan||""}`.toLowerCase().includes(q)&&(!f||o.status_pesanan===f));$("ordersBody").innerHTML=r.length?r.map(o=>`<tr><td><strong>${o.kode_pesanan||"#"+o.id}</strong></td><td>${o.nama_pelanggan||"-"}</td><td>${rupiah.format(Number(o.total||0))}</td><td><select class="select pay-status" data-id="${o.id}"><option value="belum_bayar" ${o.status_pembayaran==="belum_bayar"?"selected":""}>Belum Bayar</option><option value="sudah_bayar" ${o.status_pembayaran==="sudah_bayar"?"selected":""}>Sudah Bayar</option><option value="dibatalkan" ${o.status_pembayaran==="dibatalkan"?"selected":""}>Dibatalkan</option></select></td><td>${badge(o.status_pesanan)}</td><td><select class="select order-status" data-id="${o.id}"><option value="baru" ${o.status_pesanan==="baru"?"selected":""}>Baru</option><option value="diproses" ${o.status_pesanan==="diproses"?"selected":""}>Diproses</option><option value="dikirim" ${o.status_pesanan==="dikirim"?"selected":""}>Dikirim</option><option value="selesai" ${o.status_pesanan==="selesai"?"selected":""}>Selesai</option><option value="dibatalkan" ${o.status_pesanan==="dibatalkan"?"selected":""}>Dibatalkan</option></select></td></tr>`).join(""):empty(6,"Pesanan tidak ditemukan");document.querySelectorAll(".order-status").forEach(s=>s.onchange=()=>updateOrder(Number(s.dataset.id),{status_pesanan:s.value}));document.querySelectorAll(".pay-status").forEach(s=>s.onchange=()=>updateOrder(Number(s.dataset.id),{status_pembayaran:s.value}))}
+async function updateOrder(id,payload){const {error}=await supabase.from("orders").update({...payload,processed_by:admin.id,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast(error.message);toast("Pesanan diperbarui");loadOrders()}
 
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      clearMessage();
+async function loadCustomers(){const {data,error}=await supabase.from("customers").select("*").order("created_at",{ascending:false});if(error){$("customersBody").innerHTML=empty(4,error.message);return}customers=data||[];renderCustomers()}
+function renderCustomers(){const q=$("customerSearch").value.toLowerCase(),r=customers.filter(c=>`${c.nama||""} ${c.no_whatsapp||""}`.toLowerCase().includes(q));$("customersBody").innerHTML=r.length?r.map(c=>`<tr><td>${c.nama||"-"}</td><td>${c.no_whatsapp||"-"}</td><td>${c.alamat||"-"}</td><td>${c.created_at?new Date(c.created_at).toLocaleString("id-ID"):"-"}</td></tr>`).join(""):empty(4,"Pelanggan tidak ditemukan")}
 
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
+async function loadEmployees(){const {data,error}=await supabase.from("karyawan").select("*").order("id",{ascending:false});if(error){$("employeesBody").innerHTML=empty(6,error.message);return}employees=data||[];renderEmployees();dashboard()}
+function renderEmployees(){const q=$("employeeSearch").value.toLowerCase(),r=employees.filter(e=>`${e.nama_lengkap||""} ${e.username||""} ${e.email||""}`.toLowerCase().includes(q));$("employeesBody").innerHTML=r.length?r.map(e=>`<tr><td>${e.nama_lengkap||"-"}</td><td>${e.username||"-"}</td><td>${e.email||"-"}</td><td>${badge(e.role)}</td><td>${badge(e.status)}</td><td><button class="btn dark sm edit-employee" data-id="${e.id}">Edit</button> ${e.id!==admin.id?`<button class="btn red sm delete-employee" data-id="${e.id}">Hapus</button>`:""}</td></tr>`).join(""):empty(6,"Karyawan tidak ditemukan");document.querySelectorAll(".edit-employee").forEach(b=>b.onclick=()=>openEmployee(Number(b.dataset.id)));document.querySelectorAll(".delete-employee").forEach(b=>b.onclick=()=>deleteEmployee(Number(b.dataset.id)))}
+function openEmployee(id=null){editingEmployee=id?employees.find(e=>Number(e.id)===id):null;$("employeeModalTitle").textContent=editingEmployee?"Edit Profil Karyawan":"Tambah Profil Karyawan";$("eUid").value=editingEmployee?.auth_user_id||"";$("eUid").disabled=!!editingEmployee;$("eName").value=editingEmployee?.nama_lengkap||"";$("eUsername").value=editingEmployee?.username||"";$("eEmail").value=editingEmployee?.email||"";$("eRole").value=editingEmployee?.role||"karyawan";$("eStatus").value=editingEmployee?.status||"aktif";$("eWa").value=editingEmployee?.no_whatsapp||"";$("employeeModal").classList.add("show")}
+async function saveEmployee(){const payload={nama_lengkap:$("eName").value.trim(),username:$("eUsername").value.trim(),email:$("eEmail").value.trim()||null,role:$("eRole").value,status:$("eStatus").value,no_whatsapp:$("eWa").value.trim()||null,updated_at:new Date().toISOString()};if(!payload.nama_lengkap||!payload.username)return toast("Nama dan username wajib diisi");let res;if(editingEmployee)res=await supabase.from("karyawan").update(payload).eq("id",editingEmployee.id);else{const uid=$("eUid").value.trim();if(!uid)return toast("Auth User UID wajib diisi");res=await supabase.from("karyawan").insert({...payload,auth_user_id:uid})}if(res.error)return toast(res.error.message);$("employeeModal").classList.remove("show");toast("Profil karyawan disimpan");loadEmployees()}
+async function deleteEmployee(id){if(!confirm("Hapus profil karyawan ini? Akun Authentication tidak ikut terhapus."))return;const {error}=await supabase.from("karyawan").delete().eq("id",id);if(error)return toast(error.message);toast("Profil karyawan dihapus");loadEmployees()}
 
-      if (!email || !password) {
-        showMessage("Email dan password wajib diisi.");
-        return;
-      }
+async function loadHistory(){const {data,error}=await supabase.from("stock_history").select("*,products(nama_produk),karyawan(nama_lengkap)").order("created_at",{ascending:false}).limit(200);if(error){$("historyBody").innerHTML=empty(8,error.message);return}$("historyBody").innerHTML=(data||[]).length?data.map(h=>`<tr><td>${new Date(h.created_at).toLocaleString("id-ID")}</td><td>${h.products?.nama_produk||"-"}</td><td>${h.karyawan?.nama_lengkap||"-"}</td><td>${badge(h.tipe)}</td><td>${h.jumlah||0}</td><td>${h.stok_sebelum||0}</td><td>${h.stok_sesudah||0}</td><td>${h.keterangan||"-"}</td></tr>`).join(""):empty(8,"Belum ada riwayat stok")}
 
-      setLoading(true);
+function dashboard(){$("sProducts").textContent=products.length;$("sStock").textContent=products.reduce((a,p)=>a+Number(p.stok||0),0).toLocaleString("id-ID");$("sNew").textContent=orders.filter(o=>o.status_pesanan==="baru").length;$("sEmployees").textContent=employees.filter(e=>e.status==="aktif"&&e.role!=="admin").length;$("sRevenue").textContent=rupiah.format(orders.filter(o=>o.status_pesanan==="selesai").reduce((a,o)=>a+Number(o.total||0),0));$("latestOrders").innerHTML=orders.slice(0,5).length?orders.slice(0,5).map(o=>`<tr><td>${o.kode_pesanan||"#"+o.id}</td><td>${o.nama_pelanggan||"-"}</td><td>${rupiah.format(Number(o.total||0))}</td><td>${badge(o.status_pesanan)}</td></tr>`).join(""):empty(4,"Belum ada pesanan");const low=products.filter(p=>Number(p.stok||0)<=10).slice(0,8);$("lowStock").innerHTML=low.length?low.map(p=>`<div class="low-item"><span>${p.nama_produk}</span><strong>${p.stok} unit</strong></div>`).join(""):`<div style="color:#888">Semua stok aman</div>`}
+function reports(){const done=orders.filter(o=>o.status_pesanan==="selesai"),rev=done.reduce((a,o)=>a+Number(o.total||0),0);$("rOrders").textContent=orders.length;$("rDone").textContent=done.length;$("rCancelled").textContent=orders.filter(o=>o.status_pesanan==="dibatalkan").length;$("rRevenue").textContent=rupiah.format(rev);$("rAverage").textContent=rupiah.format(done.length?rev/done.length:0);const statuses=["baru","diproses","dikirim","selesai","dibatalkan"];$("reportStatus").innerHTML=statuses.map(s=>`<div class="low-item"><span>${s.toUpperCase()}</span><strong>${orders.filter(o=>o.status_pesanan===s).length}</strong></div>`).join("")}
 
-      try {
-        await login(email, password);
-      } catch (error) {
-        console.error("Login error:", error);
-        showMessage(error?.message || "Login gagal. Periksa email dan password.");
-        setLoading(false);
-      }
-    });
+document.querySelectorAll("[data-page]").forEach(b=>b.onclick=()=>page(b.dataset.page));
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>$(b.dataset.close).classList.remove("show"));
+$("menuBtn").onclick=()=>$("sidebar").classList.toggle("open");
+$("logout").onclick=async()=>{await supabase.auth.signOut();location.replace("/karyawan.html")};
+$("addProduct").onclick=()=>openProduct();$("saveProduct").onclick=saveProduct;$("productSearch").oninput=renderProducts;$("productFilter").onchange=renderProducts;
+$("reloadOrders").onclick=loadOrders;$("orderSearch").oninput=renderOrders;$("orderFilter").onchange=renderOrders;
+$("reloadCustomers").onclick=loadCustomers;$("customerSearch").oninput=renderCustomers;
+$("addEmployee").onclick=()=>openEmployee();$("saveEmployee").onclick=saveEmployee;$("employeeSearch").oninput=renderEmployees;
+$("reloadHistory").onclick=loadHistory;
+$("saveProfile").onclick=async()=>{const {error}=await supabase.from("karyawan").update({nama_lengkap:$("profileName").value,no_whatsapp:$("profileWa").value,updated_at:new Date().toISOString()}).eq("id",admin.id);toast(error?error.message:"Profil admin disimpan")};
+$("changePass").onclick=async()=>{const p=$("newPass").value,c=$("confirmPass").value;if(p.length<8)return toast("Password minimal 8 karakter");if(p!==c)return toast("Konfirmasi password tidak sama");const {error}=await supabase.auth.updateUser({password:p});toast(error?error.message:"Password diperbarui")};
+$("today").textContent=new Date().toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
 
-    // Tidak ada redirect otomatis saat halaman dibuka.
-    // Ini mencegah halaman login berputar karena redirect loop.
-  </script>
+if(await auth())await Promise.all([loadProducts(),loadOrders(),loadCustomers(),loadEmployees(),loadHistory()]);
+</script>
 </body>
 </html>
