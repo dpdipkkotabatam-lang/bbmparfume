@@ -12,7 +12,11 @@
       --danger:#ff7777;--ok:#63d896;--sidebar:255px;
     }
     *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+    body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+    .snowfall{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+    .snowflake{position:absolute;top:-24px;color:#fff;opacity:.75;filter:drop-shadow(0 0 4px rgba(255,255,255,.55));animation:snowFall linear infinite,snowSway ease-in-out infinite}
+    @keyframes snowFall{to{transform:translateY(110vh) rotate(360deg)}}
+    @keyframes snowSway{0%,100%{margin-left:0}50%{margin-left:35px}}
     button,input,select,textarea{font:inherit}
     button{cursor:pointer}
     .gate{position:fixed;inset:0;background:#080808;display:grid;place-items:center;z-index:500}
@@ -32,7 +36,7 @@
     .side-user{margin-top:auto;border-top:1px solid var(--line);padding-top:14px}
     .side-user small{display:block;color:var(--muted);margin-top:4px}
     .logout{width:100%;margin-top:12px;padding:11px;border-radius:9px;border:1px solid #552525;background:#251111;color:#ff9292;font-weight:700}
-    .main{margin-left:var(--sidebar);min-height:100vh}
+    .main{position:relative;z-index:1;margin-left:var(--sidebar);min-height:100vh}
     .topbar{position:sticky;top:0;z-index:30;background:rgba(8,8,8,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
     .topbar h1{margin:0;font-size:20px}.topbar p{margin:4px 0 0;color:var(--muted);font-size:12px}
     .content{padding:24px}
@@ -69,6 +73,7 @@
   </style>
 </head>
 <body>
+<div class="snowfall" id="snowfall" aria-hidden="true"></div>
 <div class="gate" id="gate"><div style="text-align:center;color:#aaa"><div class="spinner"></div>Memeriksa akses admin...</div></div>
 
 <aside class="sidebar" id="sidebar">
@@ -213,6 +218,8 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const supabase=createClient("https://glpgqvxicoskabwvashd.supabase.co","sb_publishable_SGrBZoI_E0DKxRnIjwPALg_08oWGA5U");
 const $=id=>document.getElementById(id), rupiah=new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0});
 let admin=null,products=[],orders=[],customers=[],employees=[],editingProduct=null,editingEmployee=null;
+function createSnow(){const layer=$("snowfall"),amount=window.innerWidth<700?35:70;for(let i=0;i<amount;i++){const flake=document.createElement("span");flake.className="snowflake";flake.textContent=Math.random()>.72?"❄":"•";flake.style.left=`${Math.random()*100}%`;flake.style.fontSize=`${6+Math.random()*12}px`;flake.style.animationDuration=`${7+Math.random()*12}s,${2.5+Math.random()*4}s`;flake.style.animationDelay=`-${Math.random()*18}s,-${Math.random()*5}s`;flake.style.opacity=.25+Math.random()*.65;layer.appendChild(flake)}}
+createSnow();
 
 function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2800)}
 function badge(s){const x=(s||"-").toLowerCase(),c=["aktif","selesai","sudah_bayar"].includes(x)?"green":["baru","diproses","dikirim","belum_bayar"].includes(x)?"yellow":["dibatalkan","nonaktif"].includes(x)?"red":"gray";return `<span class="badge ${c}">${s||"-"}</span>`}
