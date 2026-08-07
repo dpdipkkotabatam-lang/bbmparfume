@@ -175,6 +175,24 @@
           <button class="btn gold" id="changePass">Perbarui Password</button>
         </div>
       </div>
+      <div class="card" style="margin-top:16px">
+        <div class="section-head"><div><h2>Pengaturan Website</h2><p>Semua perubahan di bawah akan langsung digunakan oleh halaman utama</p></div></div>
+        <div class="form-grid">
+          <div class="form-group"><label>Nama Brand</label><input class="control" id="siteBrand"></div>
+          <div class="form-group"><label>Label Hero</label><input class="control" id="siteEyebrow"></div>
+          <div class="form-group"><label>Judul Utama</label><input class="control" id="siteTitle"></div>
+          <div class="form-group"><label>Judul Emas</label><input class="control" id="siteTitleGold"></div>
+          <div class="form-group"><label>Deskripsi Hero</label><textarea class="control" rows="3" id="siteHeroDescription"></textarea></div>
+          <div class="form-group"><label>URL Gambar Utama</label><input class="control" id="siteHeroImage"></div>
+          <div class="form-group"><label>URL Logo</label><input class="control" id="siteLogo"></div>
+          <div class="form-group"><label>Harga Mulai</label><input type="number" min="0" class="control" id="siteStartingPrice"></div>
+          <div class="form-group"><label>Judul Tentang</label><input class="control" id="siteAboutTitle"></div>
+          <div class="form-group"><label>Deskripsi Tentang</label><textarea class="control" rows="3" id="siteAboutDescription"></textarea></div>
+          <div class="form-group"><label>Nomor WhatsApp</label><input class="control" id="siteWhatsapp"></div>
+          <div class="form-group"><label>Username Instagram</label><input class="control" id="siteInstagram"></div>
+        </div>
+        <button class="btn gold" id="saveSiteSettings">Simpan Pengaturan Website</button>
+      </div>
     </section>
   </div>
 </main>
@@ -216,7 +234,7 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8/+esm";
 const supabase=createClient("https://glpgqvxicoskabwvashd.supabase.co","sb_publishable_SGrBZoI_E0DKxRnIjwPALg_08oWGA5U");
 const $=id=>document.getElementById(id), rupiah=new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0});
-let admin=null,products=[],orders=[],customers=[],employees=[],editingProduct=null,editingEmployee=null;
+let admin=null,products=[],orders=[],customers=[],employees=[],editingProduct=null,editingEmployee=null,siteSettings=null;
 function startSnow(){
   const canvas=$("snowCanvas"),ctx=canvas.getContext("2d");
   let flakes=[];
@@ -249,6 +267,8 @@ function page(name){document.querySelectorAll(".page").forEach(x=>x.classList.re
 async function auth(){const {data:{session}}=await supabase.auth.getSession();if(!session){location.replace("/login-karyawan.html");return false}const {data,error}=await supabase.from("karyawan").select("*").eq("auth_user_id",session.user.id).maybeSingle();if(error||!data||data.role!=="admin"||data.status!=="aktif"){await supabase.auth.signOut();location.replace("/login-karyawan.html");return false}admin=data;$("adminName").textContent=data.nama_lengkap||"Administrator";$("adminEmail").textContent=data.email||session.user.email;$("profileName").value=data.nama_lengkap||"";$("profileEmail").value=data.email||session.user.email;$("profileWa").value=data.no_whatsapp||"";$("gate").style.display="none";return true}
 
 async function loadProducts(){const {data,error}=await supabase.from("products").select("*").order("id",{ascending:false});if(error){$("productsBody").innerHTML=empty(6,error.message);return}products=data||[];renderProducts();dashboard()}
+async function loadSiteSettings(){const {data,error}=await supabase.from("site_settings").select("*").eq("id",1).maybeSingle();if(error)return toast("Pengaturan website: "+error.message);siteSettings=data||{};$("siteBrand").value=siteSettings.brand_name||"BIG BROTHER MAGIC PARFUME";$("siteEyebrow").value=siteSettings.hero_eyebrow||"PARFUM RACIKAN PREMIUM";$("siteTitle").value=siteSettings.hero_title||"Aroma berkelas,";$("siteTitleGold").value=siteSettings.hero_title_gold||"karakter tak terlupakan.";$("siteHeroDescription").value=siteSettings.hero_description||"Temukan parfum favoritmu dengan kualitas terbaik dan ketahanan aroma hingga 10–12 jam.";$("siteHeroImage").value=siteSettings.hero_image||"https://i.ibb.co.com/NdnvnwkR/image.png";$("siteLogo").value=siteSettings.logo_url||"https://i.ibb.co.com/1YT3JMbg/image.png";$("siteStartingPrice").value=siteSettings.starting_price||35000;$("siteAboutTitle").value=siteSettings.about_title||"Diracik untuk meninggalkan kesan.";$("siteAboutDescription").value=siteSettings.about_description||"Big Brother Magic Parfume menghadirkan beragam pilihan aroma dengan racikan berkualitas.";$("siteWhatsapp").value=siteSettings.whatsapp||"085830647648";$("siteInstagram").value=siteSettings.instagram||"bigbrothermagic_parfume"}
+async function saveSiteSettings(){const payload={id:1,brand_name:$("siteBrand").value.trim(),hero_eyebrow:$("siteEyebrow").value.trim(),hero_title:$("siteTitle").value.trim(),hero_title_gold:$("siteTitleGold").value.trim(),hero_description:$("siteHeroDescription").value.trim(),hero_image:$("siteHeroImage").value.trim(),logo_url:$("siteLogo").value.trim(),starting_price:Number($("siteStartingPrice").value||0),about_title:$("siteAboutTitle").value.trim(),about_description:$("siteAboutDescription").value.trim(),whatsapp:$("siteWhatsapp").value.trim(),instagram:$("siteInstagram").value.trim().replace(/^@/,""),updated_at:new Date().toISOString()};const {error}=await supabase.from("site_settings").upsert(payload);toast(error?error.message:"Pengaturan website berhasil disimpan");if(!error)siteSettings=payload}
 function renderProducts(){const q=$("productSearch").value.toLowerCase(),f=$("productFilter").value,r=products.filter(p=>(p.nama_produk||"").toLowerCase().includes(q)&&(!f||p.status===f));$("productsBody").innerHTML=r.length?r.map(p=>`<tr><td><strong>${p.nama_produk||"-"}</strong></td><td>${p.kategori||"-"}</td><td>${rupiah.format(Number(p.harga||0))}</td><td>${Number(p.stok||0)}</td><td>${badge(p.status)}</td><td><button class="btn dark sm edit-product" data-id="${p.id}">Edit</button> <button class="btn red sm delete-product" data-id="${p.id}">Hapus</button></td></tr>`).join(""):empty(6,"Produk tidak ditemukan");document.querySelectorAll(".edit-product").forEach(b=>b.onclick=()=>openProduct(Number(b.dataset.id)));document.querySelectorAll(".delete-product").forEach(b=>b.onclick=()=>deleteProduct(Number(b.dataset.id)))}
 function openProduct(id=null){editingProduct=id?products.find(p=>Number(p.id)===id):null;$("productModalTitle").textContent=editingProduct?"Edit Produk":"Tambah Produk";$("pName").value=editingProduct?.nama_produk||"";$("pCategory").value=editingProduct?.kategori||"";$("pPrice").value=editingProduct?.harga||0;$("pStock").value=editingProduct?.stok||0;$("pStatus").value=editingProduct?.status||"aktif";$("pImage").value=editingProduct?.gambar||"";$("pDescription").value=editingProduct?.deskripsi||"";$("productModal").classList.add("show")}
 async function saveProduct(){const payload={nama_produk:$("pName").value.trim(),kategori:$("pCategory").value.trim()||null,harga:Number($("pPrice").value||0),stok:Number($("pStock").value||0),status:$("pStatus").value,gambar:$("pImage").value.trim()||null,deskripsi:$("pDescription").value.trim()||null,updated_by:admin.id,updated_at:new Date().toISOString()};if(!payload.nama_produk)return toast("Nama produk wajib diisi");let res;if(editingProduct)res=await supabase.from("products").update(payload).eq("id",editingProduct.id);else res=await supabase.from("products").insert({...payload,created_by:admin.id});if(res.error)return toast(res.error.message);$("productModal").classList.remove("show");toast("Produk berhasil disimpan");loadProducts()}
@@ -283,9 +303,10 @@ $("addEmployee").onclick=()=>openEmployee();$("saveEmployee").onclick=saveEmploy
 $("reloadHistory").onclick=loadHistory;
 $("saveProfile").onclick=async()=>{const {error}=await supabase.from("karyawan").update({nama_lengkap:$("profileName").value,no_whatsapp:$("profileWa").value,updated_at:new Date().toISOString()}).eq("id",admin.id);toast(error?error.message:"Profil admin disimpan")};
 $("changePass").onclick=async()=>{const p=$("newPass").value,c=$("confirmPass").value;if(p.length<8)return toast("Password minimal 8 karakter");if(p!==c)return toast("Konfirmasi password tidak sama");const {error}=await supabase.auth.updateUser({password:p});toast(error?error.message:"Password diperbarui")};
+$("saveSiteSettings").onclick=saveSiteSettings;
 $("today").textContent=new Date().toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
 
-if(await auth())await Promise.all([loadProducts(),loadOrders(),loadCustomers(),loadEmployees(),loadHistory()]);
+if(await auth())await Promise.all([loadProducts(),loadOrders(),loadCustomers(),loadEmployees(),loadHistory(),loadSiteSettings()]);
 </script>
 </body>
 </html>
