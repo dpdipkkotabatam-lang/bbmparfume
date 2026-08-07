@@ -64,6 +64,12 @@
     .back-link { text-align: center; margin-top: 16px; }
     .back-link a { color: #888; text-decoration: none; font-size: .85rem; }
     .back-link a:hover { color: #f5c542; }
+    .forgot-wrap { text-align: right; margin: -8px 0 18px; }
+    .forgot-btn {
+      width: auto; padding: 0; background: transparent; color: #f5c542;
+      font-size: .84rem; font-weight: 600;
+    }
+    .forgot-btn:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -85,6 +91,10 @@
         <label for="password">🔒 Password</label>
         <input type="password" id="password" name="password"
                placeholder="masukkan password" autocomplete="current-password" required>
+      </div>
+
+      <div class="forgot-wrap">
+        <button type="button" class="forgot-btn" id="forgotBtn">Lupa Password?</button>
       </div>
 
       <button type="submit" id="loginBtn">
@@ -119,6 +129,7 @@
     const loginBtn = document.getElementById("loginBtn");
     const loginText = document.getElementById("loginText");
     const message = document.getElementById("message");
+    const forgotBtn = document.getElementById("forgotBtn");
 
     function showMessage(text, type = "error") {
       message.textContent = text;
@@ -174,10 +185,9 @@
       }
 
       if (profil.role === "admin") {
-  window.location.replace("/admin/");
-} else {
-  window.location.replace("/karyawan/");
-}
+        window.location.replace("/admin/");
+      } else {
+        window.location.replace("/panel-karyawan.html");
       }
     }
 
@@ -201,6 +211,31 @@
         console.error("Login error:", error);
         showMessage(error?.message || "Login gagal. Periksa email dan password.");
         setLoading(false);
+      }
+    });
+
+    forgotBtn.addEventListener("click", async () => {
+      clearMessage();
+      const email = document.getElementById("email").value.trim();
+      if (!email) {
+        showMessage("Masukkan email terlebih dahulu, lalu tekan Lupa Password.", "info");
+        document.getElementById("email").focus();
+        return;
+      }
+
+      forgotBtn.disabled = true;
+      forgotBtn.textContent = "Mengirim...";
+      try {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/update-password.html`
+        });
+        if (error) throw error;
+        showMessage("Link reset password sudah dikirim. Periksa kotak masuk atau folder Spam.", "info");
+      } catch (error) {
+        showMessage(error?.message || "Gagal mengirim email reset password.");
+      } finally {
+        forgotBtn.disabled = false;
+        forgotBtn.textContent = "Lupa Password?";
       }
     });
 
