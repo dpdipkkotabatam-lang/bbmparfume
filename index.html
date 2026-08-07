@@ -71,8 +71,6 @@
   </style>
 </head>
 <body>
-<canvas id="snowCanvas" aria-hidden="true"></canvas>
-<div class="snow-proof">❄ SALJU AKTIF</div>
 <div class="gate" id="gate"><div style="text-align:center;color:#aaa"><div class="spinner"></div>Memeriksa akses admin...</div></div>
 
 <aside class="sidebar" id="sidebar">
@@ -236,7 +234,9 @@ const supabase=createClient("https://glpgqvxicoskabwvashd.supabase.co","sb_publi
 const $=id=>document.getElementById(id), rupiah=new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0});
 let admin=null,products=[],orders=[],customers=[],employees=[],editingProduct=null,editingEmployee=null,siteSettings=null;
 function startSnow(){
-  const canvas=$("snowCanvas"),ctx=canvas.getContext("2d");
+  const canvas=$("snowCanvas");
+if(!canvas)return;
+const ctx=canvas.getContext("2d");
   let flakes=[];
   function resize(){
     const ratio=Math.min(window.devicePixelRatio||1,2);
